@@ -1255,6 +1255,17 @@ export const sidebarTranslations: Translations = {
     zh: 'Cookie 已清除',
     ja: 'Cookie がクリアされました',
   },
+  'notif.switch_to_tab': {
+    en: 'Switch to tab',
+    de: 'Zu Tab wechseln',
+    fr: `Passer à l'onglet`,
+    hu: 'Váltás a lapra',
+    pl: 'Przełącz na kartę',
+    ru: 'Перейти на вкладку',
+    zh_CN: '切换到标签页',
+    zh_TW: '切換至分頁',
+    ja: 'タブに切り替える',
+  },
 
   // ---
   // -- Colors

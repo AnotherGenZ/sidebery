@@ -2901,72 +2901,167 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
     zh_TW: '在未讀分頁上顯示標記',
     ja: '未読タブにマークを表示する',
   },
-  'settings.tabs_update_mark': {
-    en: 'Show mark on tabs with updated title',
-    de: 'Zeige Markierung an Tabs mit aktualisiertem Titel',
-    fr: 'Afficher un indicateur sur les onglets dont le titre a changé',
-    hu: 'A frissített oldalcímű lapok megjelölése',
-    pl: 'Pokaż znacznik na kartach z zaaktualizowanym tytułem',
-    ru: 'Показывать метку на вкладках с обновленным заголовком',
-    zh_CN: '在更新标题的标签页上显示标记',
-    zh_TW: '在更新標題的分頁上顯示標記',
-    ja: '更新されたタブにマークを表示する',
+
+  'settings.tabs_badge': {
+    en: 'Show badges over tab favicons on URL or title update',
+    de: 'Badges über Tab-Favicons bei Aktualisierung von URL oder Titel anzeigen',
+    fr: `Afficher des badges sur les favicons des onglets lors de la mise à jour de l'URL ou du titre`,
+    hu: 'Jelvények megjelenítése a lapok faviconjain az URL vagy a cím frissülésekor',
+    pl: 'Pokazuj plakietki na ikonach kart przy aktualizacji adresu URL lub tytułu',
+    ru: 'Показывать индикаторы на значках вкладок при обновлении URL или заголовка',
+    zh_CN: '当 URL 或标题更新时在标签页图标上显示徽标',
+    zh_TW: '當 URL 或標題更新時在分頁圖標上顯示徽章',
+    ja: 'URLまたはタイトルが更新されたとき、タブのファビコンにバッジを表示する',
   },
-  'settings.tabs_update_mark_all': {
-    en: 'on',
-    de: 'Ein',
-    fr: 'tous',
-    hu: 'be',
-    pl: 'włączone',
-    ru: 'вкл',
-    zh_CN: '打开',
-    zh_TW: '開啟',
-    ja: 'オン',
+  'settings.tabs_badge_rules': {
+    en: 'Badge rules',
+    de: 'Badge-Regeln',
+    fr: 'Règles des badges',
+    hu: 'Jelvényszabályok',
+    pl: 'Reguły plakietek',
+    ru: 'Правила индикаторов',
+    zh_CN: '徽标规则',
+    zh_TW: '徽章規則',
+    ja: 'バッジのルール',
   },
-  'settings.tabs_update_mark_pin': {
-    en: 'only for pinned',
-    de: 'Nur für angeheftete',
-    fr: 'onglets épinglés seulement',
-    hu: 'csak rögzített',
-    pl: 'tylko dla przypiętych',
-    ru: 'только для закрепленных',
-    zh_CN: '仅用于固定',
-    zh_TW: '僅釘選',
-    ja: '固定のみ',
+  'settings.tabs_badge_rules_note': {
+    en: `A newline-separated list of badge rules. A rule consists of optional parameters separated by a semicolon followed by a space: \`; \`. Examples:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Available parameters:
+- \`url:{RegExp} and/or title:{RegExp}\`: A regular expression to match the tab and optionally retrieve the badge value via a named group: \`(?<v>...)\`. If your \`{RegExp}\` contains a semicolon followed by a space \`; \`, escape the space with a backslash: \`;\\ \`.
+- \`bg:{Color} and/or fg:{Color}\`: The color of the badge background or text.
+- \`urgent\`: Makes the badge urgent and propagates this status to parent elements (folded tabs, inactive panels). Ignored for unloaded and active tabs. After tab activation: a value-less badge will be hidden completely, and a badge with the value will be downgraded to a normal badge.
+- \`notify\`: Shows notification.
+- \`pinned\`: Applies the rule only to pinned tabs.
+- \`normal\`: Applies the rule only to non-pinned tabs.
+- \`value:{Text}\`: Sets a static value for the badge.
+- \`minUrlAge:{Milliseconds}\`: Applies the rule only if the URL age is greater than or equal to \`{Milliseconds}\`. Ignored for unloaded and active tabs.`,
+    de: `Eine durch Zeilenumbrüche getrennte Liste von Badge-Regeln. Eine Regel besteht aus optionalen Parametern, die durch ein Semikolon gefolgt von einem Leerzeichen getrennt sind: \`; \`. Beispiele:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Verfügbare Parameter:
+- \`url:{RegExp} und/oder title:{RegExp}\`: Ein regulärer Ausdruck, um den Tab abzugleichen und optional den Badge-Wert über eine benannte Gruppe abzurufen: \`(?<v>...)\`. Wenn Ihr \`{RegExp}\` ein Semikolon gefolgt von einem Leerzeichen \`; \` enthält, maskieren Sie das Leerzeichen mit einem Backslash: \`;\\ \`.
+- \`bg:{Color} und/oder fg:{Color}\`: Die Farbe des Badge-Hintergrunds oder -Textes.
+- \`urgent\`: Markiert das Badge als dringend und überträgt diesen Status auf übergeordnete Elemente (zugeklappte Tabs, inaktive Panels). Wird für nicht geladene und aktive Tabs ignoriert. Nach der Tab-Aktivierung wird ein Badge ohne Wert vollständig ausgeblendet und ein Badge mit Wert auf ein normales Badge heruntergestuft.
+- \`notify\`: Zeigt eine Benachrichtigung an.
+- \`pinned\`: Wendet die Regel nur auf angepinnte Tabs an.
+- \`normal\`: Wendet die Regel nur auf nicht angepinnte Tabs an.
+- \`value:{Text}\`: Legt einen statischen Wert für das Badge fest.
+- \`minUrlAge:{Milliseconds}\`: Wendet die Regel nur an, wenn das URL-Alter größer oder gleich \`{Milliseconds}\` ist. Wird für nicht geladene und aktive Tabs ignoriert.`,
+    fr: `Une liste de règles de badges séparées par des sauts de ligne. Une règle se compose de paramètres optionnels séparés par un point-virgule suivi d'un espace : \`; \`. Exemples :
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Paramètres disponibles :
+- \`url:{RegExp} et/ou title:{RegExp}\`: Une expression régulière pour faire correspondre l'onglet et éventuellement récupérer la valeur du badge via un groupe nommé : \`(?<v>...)\`. Si votre \`{RegExp}\` contient un point-virgule suivi d'un espace \`; \`, échappez l'espace avec un antislash : \`;\\ \`.
+- \`bg:{Color} et/ou fg:{Color}\`: La couleur d'arrière-plan ou du texte du badge.
+- \`urgent\`: Rend le badge urgent et propage ce statut aux éléments parents (onglets réduits, panneaux inactifs). Ignoré pour les onglets non chargés et actifs. Après l'activation de l'onglet : un badge sans valeur sera complètement masqué, et un badge avec valeur sera rétrogradé en badge normal.
+- \`notify\`: Affiche une notification.
+- \`pinned\`: Applique la règle uniquement aux onglets épinglés.
+- \`normal\`: Applique la règle uniquement aux onglets non épinglés.
+- \`value:{Text}\`: Définit une valeur statique pour le badge.
+- \`minUrlAge:{Milliseconds}\`: Applique la règle uniquement si l'âge de l'URL est supérieur ou égal à \`{Milliseconds}\`. Ignoré pour les onglets non chargés et actifs.`,
+    hu: `Újsorral elválasztott jelvényszabályok listája. Egy szabály opcionális paraméterekből áll, amelyeket egy pontosvessző és egy szóköz választ el: \`; \`. Példák:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Elérhető paraméterek:
+- \`url:{RegExp} és/vagy title:{RegExp}\`: Egy reguláris kifejezés a lap illesztéséhez, és opcionálisan a jelvény értékének kinyeréséhez egy elnevezett csoporton keresztül: \`(?<v>...)\`. Ha a \`{RegExp}\` pontosvesszőt és utána szóközt \`; \` tartalmaz, a szóközt egy fordított perjellel kell levédeni: \`;\\ \`.
+- \`bg:{Color} és/vagy fg:{Color}\`: A jelvény hátterének vagy szövegének színe.
+- \`urgent\`: Sürgőssé teszi a jelvényt, és ezt az állapotot továbbítja a szülő elemeknek (összecsukott lapok, inaktív panelek). A nem betöltött és az aktív lapoknál figyelmen kívül marad. A lap aktiválása után: az érték nélküli jelvény teljesen eltűnik, az értékkel rendelkező jelvény pedig normál jelvénnyé fokozódik le.
+- \`notify\`: Értesítést jelenít meg.
+- \`pinned\`: A szabályt csak a rögzített lapokra alkalmazza.
+- \`normal\`: A szabályt csak a nem rögzített lapokra alkalmazza.
+- \`value:{Text}\`: Statikus értéket állít be a jelvényhez.
+- \`minUrlAge:{Milliseconds}\`: A szabályt csak akkor alkalmazza, ha az URL kora nagyobb vagy egyenlő, mint \`{Milliseconds}\`. A nem betöltött és az aktív lapoknál figyelmen kívül marad.`,
+    pl: `Lista reguł plakietek oddzielonych nową linią. Reguła składa się z opcjonalnych parametrów oddzielonych średnikiem i spacją: \`; \`. Przykłady:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Dostępne parametry:
+- \`url:{RegExp} i/lub title:{RegExp}\`: Wyrażenie regularne do dopasowania karty i opcjonalnego pobrania wartości plakietki za pomocą nazwanej grupy: \`(?<v>...)\`. Jeśli \`{RegExp}\` zawiera średnik ze spacją \`; \`, należy uciec spację ukośnikiem wstecznym: \`;\\ \`.
+- \`bg:{Color} i/lub fg:{Color}\`: Kolor tła lub tekstu plakietki.
+- \`urgent\`: Nadaje plakietce status pilnej i propaguje go do elementów nadrzędnych (zwinięte karty, nieaktywne panele). Ignorowane dla niezaładowanych i aktywnych kart. Po aktywacji karty: plakietka bez wartości zostanie całkowicie ukryta, a plakietka z wartością zostanie obniżona do zwykłej plakietki.
+- \`notify\`: Pokazuje powiadomienie.
+- \`pinned\`: Stosuje regułę tylko do przypiętych kart.
+- \`normal\`: Stosuje regułę tylko do nieprzypiętych kart.
+- \`value:{Text}\`: Ustawia statyczną wartość plakietki.
+- \`minUrlAge:{Milliseconds}\`: Stosuje regułę tylko wtedy, gdy wiek adresu URL jest większy lub równy \`{Milliseconds}\`. Ignorowane dla niezaładowanych i aktywnych kart.`,
+    ru: `Список правил для индикаторов, разделенных переносом строки. Правило состоит из необязательных параметров, разделенных точкой с запятой и пробелом: \`; \`. Примеры:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+Доступные параметры:
+- \`url:{RegExp} и/или title:{RegExp}\`: Регулярное выражение для сопоставления со вкладкой и (опционально) извлечения значения индикатора через именованную группу: \`(?<v>...)\`. Если ваше \`{RegExp}\` содержит точку с запятой и пробел \`; \`, экранируйте пробел обратным слешем: \`;\\ \`.
+- \`bg:{Color} и/или fg:{Color}\`: Цвет фона или текста индикатора.
+- \`urgent\`: Делает индикатор важным (urgent) и передает этот статус родительским элементам (свернутым вкладкам, неактивным панелям). Игнорируется для выгруженных и активных вкладок. После активации вкладки: индикатор без значения полностью скрывается, а индикатор со значением понижается до обычного.
+- \`notify\`: Показывает уведомление.
+- \`pinned\`: Применяет правило только к закрепленным вкладкам.
+- \`normal\`: Применяет правило только к незакрепленным вкладкам.
+- \`value:{Text}\`: Задает статическое значение для индикатора.
+- \`minUrlAge:{Milliseconds}\`: Применяет правило только в том случае, если возраст URL больше или равен \`{Milliseconds}\`. Игнорируется для выгруженных и активных вкладок.`,
+    zh_CN: `换行符分隔的徽标规则列表。每条规则由可选参数组成，参数之间用分号加空格 \`; \` 分隔。示例：
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+可用参数：
+- \`url:{RegExp} 和/或 title:{RegExp}\`: 用于匹配标签页的正则表达式，并可通过命名捕获组 \`(?<v>...)\` 选择性地获取徽标值。如果你的 \`{RegExp}\` 包含分号加空格 \`; \`，请用反斜杠转义该空格：\`;\\ \`.
+- \`bg:{Color} 和/或 fg:{Color}\`: 徽标背景或文本的颜色。
+- \`urgent\`: 将徽标设为紧急状态，并将此状态传递给父级元素（折叠的标签页、非活动面板）。对未加载的和活动标签页忽略此参数。标签页激活后：无值的徽标将完全隐藏，有值的徽标将降级为普通徽标。
+- \`notify\`: 显示通知。
+- \`pinned\`: 仅将规则应用于固定标签页。
+- \`normal\`: 仅将规则应用于非固定标签页。
+- \`value:{Text}\`: 为徽标设置一个静态值。
+- \`minUrlAge:{Milliseconds}\`: 仅在 URL 存在时间大于或等于 \`{Milliseconds}\` 时应用规则。对未加载的和活动标签页忽略此参数。`,
+    zh_TW: `換行符號分隔的徽章規則清單。每條規則由選填參數組成，參數之間用分號加空格 \`; \` 分隔。範例：
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+可用參數：
+- \`url:{RegExp} 和/或 title:{RegExp}\`: 用於比對分頁的正規表示式，並可透過命名擷取群組 \`(?<v>...)\` 選擇性地獲取徽章值。如果您的 \`{RegExp}\` 包含分號加空格 \`; \`，請用反斜線逸出該空格：\`;\\ \`.
+- \`bg:{Color} 和/或 fg:{Color}\`: 徽章背景或文字的顏色。
+- \`urgent\`: 將徽章設為緊急狀態，並將此狀態傳遞給父級元素（摺疊的分頁、非活動面板）。對未載入的和活動分頁忽略此參數。分頁啟用後：無值的徽章將完全隱藏，有值的徽章將升級或降級為普通徽章。
+- \`notify\`: 顯示通知。
+- \`pinned\`: 僅將規則套用於固定分頁。
+- \`normal\`: 僅將規則套用於非固定分頁。
+- \`value:{Text}\`: 為徽章設定一個靜態值。
+- \`minUrlAge:{Milliseconds}\`: 僅在 URL 存在時間大於或等於 \`{Milliseconds}\` 時套用規則。對未載入的和活動分頁忽略此參數。`,
+    ja: `改行で区切られたバッジルールのリスト。各ルールは、セミコロンとスペース \`; \` で区切られたオプションのパラメータで構成されます。例:
+\`\`\`
+title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
+minUrlAge:5000; urgent
+url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
+\`\`\`
+利用可能なパラメータ:
+- \`url:{RegExp} and/or title:{RegExp}\`: タブをマッチングし、オプションで名前付きグループ \`(?<v>...)\` を介してバッジの値を取得するための正規表現。もし \`{RegExp}\` にセミコロンとスペース \`; \` が含まれる場合は、スペースをバックスラッシュでエスケープしてください: \`;\\ \`。
+- \`bg:{Color} and/or fg:{Color}\`: バッジの背景色または文字色。
+- \`urgent\`: バッジを緊急状態にし、このステータスを親要素（折りたたまれたタブ、非アクティブなパネル）に伝播させます。未読み込みのタブおよびアクティブなタブでは無視されます。タブがアクティブになった後、値のないバッジは完全に非表示になり、値のあるバッジは通常のバッジにダウングレードされます。
+- \`notify\`: 通知を表示します。
+- \`pinned\`: ピン留めされたタブにのみルールを適用します。
+- \`normal\`: ピン留めされていないタブにのみルールを適用します。
+- \`value:{Text}\`: バッジに静的な値を設定します。
+- \`minUrlAge:{Milliseconds}\`: URLの経過時間が \`{Milliseconds}\` 以上の場合にのみルールを適用します。未読み込みのタブおよびアクティブなタブでは無視されます。`,
   },
-  'settings.tabs_update_mark_norm': {
-    en: 'only for not pinned',
-    de: 'Nur für nicht angeheftete',
-    fr: 'onlets non épinglés seulement',
-    hu: 'csak nem rögzített',
-    pl: 'tylko dla nieprzypiętych',
-    ru: 'только для не закрепленных',
-    zh_CN: '仅用于未固定',
-    zh_TW: '僅未釘選',
-    ja: '固定以外のみ',
-  },
-  'settings.tabs_update_mark_none': {
-    en: 'off',
-    de: 'Aus',
-    fr: 'aucun',
-    hu: 'ki',
-    pl: 'wyłączone',
-    ru: 'выкл',
-    zh_CN: '关闭',
-    zh_TW: '關閉',
-    ja: 'オフ',
-  },
-  'settings.tabs_update_mark_first': {
-    en: 'Including the first title change with new URL',
-    de: 'Einschließlich der ersten Titeländerung bei einer neuen URL',
-    fr: 'Incluant le premier changement de titre d’une nouvelle URL',
-    hu: 'Az új URL első címváltozásakor is',
-    pl: 'Uwzględnij pierwszą zmianę tytułu z nowym URL',
-    ru: 'Включая первое изменение заголовка с новым URL',
-    zh_CN: '包括使用新 URL 的第一次标题更改',
-    zh_TW: '包括輸入新網址的第一次標題更新',
-    ja: '新しいURLの最初のタイトル変更を含む',
-  },
+
   'settings.tabs_notification_badge_scope': {
     en: 'Show notification badges over tab favicons',
     de: 'Benachrichtigungs-Badges auf Tab-Favicons anzeigen',

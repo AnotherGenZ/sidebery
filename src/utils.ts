@@ -713,7 +713,7 @@ export function restoreUrl(url?: string): string | undefined {
 }
 
 export function recreateNormalizedObject<T extends object>(obj: Partial<T>, defaults: T): T {
-  const result = cloneObject(defaults)
+  const result = structuredClone(defaults)
   for (const key of Object.keys(defaults) as (keyof T)[]) {
     if (obj[key] !== undefined) result[key] = obj[key]
   }
@@ -721,7 +721,7 @@ export function recreateNormalizedObject<T extends object>(obj: Partial<T>, defa
 }
 
 export function normalizeObject<T extends object>(obj: T, defaults: T): void {
-  const clonedDefaults = cloneObject(defaults)
+  const clonedDefaults = structuredClone(defaults)
   for (const key of Object.keys(clonedDefaults) as (keyof T)[]) {
     if (obj[key] === undefined) obj[key] = clonedDefaults[key]
   }

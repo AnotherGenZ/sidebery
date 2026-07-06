@@ -787,13 +787,9 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
       if (mediaStateChanged) {
         Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
       }
-      if (tab.updated) {
-        tab.reactive.updated = tab.updated = false
-        const panel = Sidebar.panelsById[tab.panelId]
-        if (Utils.isTabsPanel(panel) && panel.updatedTabs.length) {
-          Utils.rmFromArray(panel.updatedTabs, tab.id)
-          panel.reactive.updated = panel.updatedTabs.length > 0
-        }
+      if (tab.badgeUrgent) {
+        Tabs.resetUrgencyAndValuelessBadge(tab)
+        Tabs.propagateBadgeUrgency(tab)
       }
 
       if (!tab.favIconUrl && change.favIconUrl === undefined) {
@@ -900,6 +896,9 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
     // Update group
     const groupTab = Tabs.getGroupTab(tab)
     if (groupTab && !groupTab.discarded) Tabs.updateGroupOrItsChild(groupTab, nativeTab.id)
+
+    // Set url update timestamp
+    if (!isInternal) tab.urlUpdated = Date.now()
   }
 
   // Handle Firefox internal favicon
@@ -914,41 +913,6 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
   // Handle title change
   if (change.title !== undefined) {
     if (change.title.startsWith(EXT_HOST)) change.title = tab.title
-
-    // Mark tab with updated title
-    if (
-      !tab.updated && // Tab is not updated
-      !nativeTab.active && // Tab is inactive
-      !tab.internal && //  Tab is not internal
-      !tab.discarded && // Tab is loaded
-      // Check settings
-      (Settings.tabsUpdateMarkAll ||
-        (Settings.tabsUpdateMarkPin && tab.pinned) ||
-        (Settings.tabsUpdateMarkNorm && !tab.pinned)) &&
-      // Tab is inactive for more than 5s
-      Date.now() - nativeTab.lastAccessed > 5000 &&
-      // Current url is the same as previous
-      tab.url === nativeTab.url
-    ) {
-      // Check if this title update is the first for current URL
-      const ok = Settings.state.tabsUpdateMarkFirst
-        ? !URL_HOST_PATH_RE.test(nativeTab.title)
-        : !URL_HOST_PATH_RE.test(tab.title) && !URL_HOST_PATH_RE.test(nativeTab.title)
-      if (ok) {
-        const panel = Sidebar.panelsById[tab.panelId]
-        tab.updated = true
-        tab.reactive.updated = true
-        if (
-          Utils.isTabsPanel(panel) &&
-          (!nativeTab.pinned || Settings.state.pinnedTabsPosition === 'panel') &&
-          panel.updatedTabs &&
-          !panel.updatedTabs.includes(tabId)
-        ) {
-          panel.updatedTabs.push(tabId)
-          panel.reactive.updated = true
-        }
-      }
-    }
 
     // Reset custom title
     if (tab.isGroup && tab.active && change.title !== D.GROUP_INITIAL_TITLE) {
@@ -1110,19 +1074,24 @@ function updTabsReactiveProps() {
 }
 
 function updTabReactiveProps(change: browser.tabs.ChangeInfo, tab: Tab) {
+  const tChange = change.title !== undefined
+  const uChange = change.url !== undefined
+  const dChange = change.discarded !== undefined
+  const pChange = change.pinned !== undefined
   if (change.audible !== undefined) tab.reactive.mediaAudible = change.audible
-  if (change.discarded !== undefined) tab.reactive.discarded = change.discarded
+  if (dChange) tab.reactive.discarded = change.discarded as boolean
   if (change.favIconUrl !== undefined) {
     if (tab.internal) tab.favIconUrl = undefined
     Tabs.renderFavicon(tab)
   }
   if (change.mutedInfo?.muted !== undefined) tab.reactive.mediaMuted = change.mutedInfo.muted
-  if (change.pinned !== undefined) tab.reactive.pinned = change.pinned
+  if (pChange) tab.reactive.pinned = change.pinned as boolean
   if (change.status !== undefined) tab.reactive.status = Tabs.getStatus(tab)
-  if (change.title !== undefined) Tabs.renderTitle(tab)
-  if (change.title !== undefined || change.pinned !== undefined)
-    Tabs.updateNotificationBadgeCountTab(tab)
-  if (change.url !== undefined) tab.reactive.url = change.url
+  if (tChange) Tabs.renderTitle(tab)
+  if (uChange) tab.reactive.url = change.url as string
+  if (!tab.internal && (tChange || uChange || dChange || pChange)) {
+    Tabs.updateBadge(tab, change)
+  }
 }
 
 let recentlyRemovedChildParentMap: Record<ID, ID> | null = null
@@ -1366,10 +1335,9 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
     Tabs.createTabInPanel(panel, { active: false })
   }
 
-  // Remove updated flag
-  if (panel.updatedTabs.length) {
-    Utils.rmFromArray(panel.updatedTabs, tabId)
-    panel.reactive.updated = panel.updatedTabs.length > 0
+  // Recalc urgency for ancestors
+  if (tab.badgeUrgent) {
+    Tabs.propagateBadgeUrgency(tab, false)
   }
 
   // Update media badges
@@ -1515,6 +1483,9 @@ function onTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
   const maxIndex = Math.max(info.fromIndex, info.toIndex)
   Tabs.updateTabsIndexes(minIndex, maxIndex + 1)
 
+  // Remove badge urgency from old ancestors / panel
+  if (tab.badgeUrgent) Tabs.propagateBadgeUrgency(tab, false)
+
   // Update tab's panel id
   let srcPanel
   let dstPanel
@@ -1564,6 +1535,9 @@ function onTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
       }
     }
   }
+
+  // Add badge urgency to new ancestors / panel
+  if (tab.badgeUrgent) Tabs.propagateBadgeUrgency(tab)
 
   if (srcPanel) Sidebar.recalcVisibleTabs(srcPanel.id)
   if (dstPanel && dstPanel !== srcPanel) Sidebar.recalcVisibleTabs(dstPanel.id)
@@ -1723,9 +1697,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   }
 
   tab.reactive.active = tab.active = true
-  if (Settings.state.tabsUpdateMark !== 'none') {
-    tab.reactive.updated = tab.updated = false
-  }
+
   if (Settings.state.tabsUnreadMark) {
     tab.reactive.unread = tab.unread = false
   }
@@ -1738,9 +1710,10 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   // Update succession
   Tabs.updateSuccessionDebounced(0)
 
-  if (panel.updatedTabs.length) {
-    Utils.rmFromArray(panel.updatedTabs, tab.id)
-    panel.reactive.updated = panel.updatedTabs.length > 0
+  // Update badges
+  if (tab.badgeUrgent) {
+    Tabs.resetUrgencyAndValuelessBadge(tab)
+    Tabs.propagateBadgeUrgency(tab)
   }
 
   // Switch to activated tab's panel

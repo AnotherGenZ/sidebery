@@ -95,11 +95,10 @@ export interface SettingsState {
   activateAfterClosingNoDiscarded: boolean
   tabsRmUndoNote: boolean
   tabsUnreadMark: boolean
-  tabsUpdateMark: (typeof SETTINGS_OPTIONS.tabsUpdateMark)[number]
-  tabsUpdateMarkFirst: boolean
-  tabsNotificationBadgeScope: (typeof SETTINGS_OPTIONS.tabsNotificationBadgeScope)[number]
-  tabsNotificationBadgeStyle: (typeof SETTINGS_OPTIONS.tabsNotificationBadgeStyle)[number]
-  tabsNotificationBadgeRegExpPattern: string
+  tabsUpdateMark?: (typeof SETTINGS_OPTIONS.tabsUpdateMark)[number] // DEPR
+  tabsUpdateMarkFirst?: boolean // DEPR
+  tabsBadge: boolean
+  tabsBadgeRules: string
   tabsReloadLimit: number
   tabsReloadLimitNotif: boolean
   showNewTabBtns: boolean

@@ -19,11 +19,6 @@ export let activateAfterClosingNext = false
 export let activateAfterClosingPrev = false
 export let activateAfterClosingPrevAct = false
 
-export let tabsUpdateMarkAll = false
-export let tabsUpdateMarkPin = false
-export let tabsUpdateMarkNorm = false
-export let tabsUpdateMarkNone = false
-
 export function reactivate(r: Reactivator<SettingsState>) {
   state = r(state)
 }
@@ -47,6 +42,7 @@ export async function load(): Promise<void> {
   }
 
   Utils.normalizeObject(storedManaged.settings, storedLocal.settings)
+  const tabsUpdateMark = storedManaged.settings.tabsUpdateMark
   const groupOnOpen = storedManaged.settings.groupOnOpen
   Utils.normalizeObject(storedManaged.settings, DEFAULT_SETTINGS)
   Utils.updateObject(state, storedManaged.settings, state)
@@ -62,6 +58,28 @@ export async function load(): Promise<void> {
     state.moveNewTabParentIndent = true
   }
 
+  // TMP
+  // Handle deprecated tabsUpdateMark
+  if (tabsUpdateMark !== undefined) {
+    if (tabsUpdateMark === 'none') {
+      state.tabsBadge = false
+    } else if (tabsUpdateMark === 'norm') {
+      state.tabsBadgeRules = state.tabsBadgeRules.replace(
+        '\nminUrlAge:5000; urgent',
+        '\nminUrlAge:5000; urgent; normal'
+      )
+    } else if (tabsUpdateMark === 'pin') {
+      state.tabsBadgeRules = state.tabsBadgeRules.replace(
+        '\nminUrlAge:5000; urgent',
+        '\nminUrlAge:5000; urgent; pinned'
+      )
+    }
+    delete state.tabsUpdateMark
+    delete state.tabsUpdateMarkFirst
+    initSaveNeeded = true
+  }
+
+  // TMP
   // Handle removed 'window' tab preview option
   if ((state.previewTabsMode as any) === 'w') {
     state.previewTabsMode = 'p'
@@ -90,11 +108,6 @@ export function updPrecalcSettings() {
   activateAfterClosingNext = state.activateAfterClosing === 'next'
   activateAfterClosingPrev = state.activateAfterClosing === 'prev'
   activateAfterClosingPrevAct = state.activateAfterClosing === 'prev_act'
-
-  tabsUpdateMarkAll = state.tabsUpdateMark === 'all'
-  tabsUpdateMarkPin = state.tabsUpdateMark === 'pin'
-  tabsUpdateMarkNorm = state.tabsUpdateMark === 'norm'
-  tabsUpdateMarkNone = state.tabsUpdateMark === 'none'
 }
 
 export function resetSettings(): void {

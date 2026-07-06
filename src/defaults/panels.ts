@@ -79,7 +79,7 @@ export const TABS_PANEL_STATE: T.TabsPanel = {
   tabs: [],
   pinnedTabs: [],
   filteredTabs: undefined,
-  updatedTabs: [],
+  urgentTabIds: new Set(),
   selNewTab: false,
   startTabIndex: -1,
   endTabIndex: -1,
@@ -114,7 +114,7 @@ export const TABS_PANEL_STATE: T.TabsPanel = {
 
     visibleTabIds: [],
     pinnedTabIds: [],
-    updated: false,
+    badge: false,
     selNewTab: false,
     scrollRetainerHeight: 0,
     empty: true,

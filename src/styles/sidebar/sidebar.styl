@@ -379,12 +379,12 @@ body
   opacity: 1
   z-index: 1000
 for i in 1..16
-  .TabsPanel[data-pos="c"] .pointer[data-pointer="between"][data-lvl=\"{i}\"]:before
-  .TabsPanel[data-pos="c"] .pointer[data-pointer="between"][data-lvl=\"{i}\"]:after
+  .TabsPanel .pointer[data-pointer="between"][data-lvl=\"{i}\"]:before
+  .TabsPanel .pointer[data-pointer="between"][data-lvl=\"{i}\"]:after
     transform: "translateX(calc(var(--tabs-indent) * %s + var(--tabs-margin)))" % i
 for i in 1..16
-  .BookmarksPanel[data-pos="c"] .pointer[data-pointer="between"][data-lvl=\"{i}\"]:before
-  .BookmarksPanel[data-pos="c"] .pointer[data-pointer="between"][data-lvl=\"{i}\"]:after
+  .BookmarksPanel .pointer[data-pointer="between"][data-lvl=\"{i}\"]:before
+  .BookmarksPanel .pointer[data-pointer="between"][data-lvl=\"{i}\"]:after
     transform: "translateX(calc(var(--bookmarks-indent) * %s + var(--bookmarks-margin)))" % i
 for i in 1..16
   .BookmarksSubPanel .pointer[data-pointer="between"][data-lvl=\"{i}\"]:before

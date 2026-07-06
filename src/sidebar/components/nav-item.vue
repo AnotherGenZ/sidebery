@@ -133,7 +133,7 @@ const bookmarksBadge =
 
 const isUpdated = computed<boolean>(() => {
   if (Utils.isTabsPanel(props.item)) {
-    return Sidebar.reactive.activePanelId !== props.item.id && props.item.reactive.updated
+    return Sidebar.reactive.activePanelId !== props.item.id && props.item.reactive.badge
   }
   return false
 })

@@ -131,7 +131,7 @@ export interface TabsPanel extends PanelCommonProps, TabsPanelConfig {
   tabs: Tab[]
   pinnedTabs: Tab[]
   filteredTabs?: Tab[]
-  updatedTabs: ID[]
+  urgentTabIds: Set<ID>
   selNewTab: boolean
   startTabIndex: number
   endTabIndex: number
@@ -147,8 +147,7 @@ export interface TabsPanel extends PanelCommonProps, TabsPanelConfig {
 export interface TabsPanelReactiveProps extends PanelCommonReactiveProps {
   visibleTabIds: ID[]
   pinnedTabIds: ID[]
-
-  updated: boolean
+  badge: boolean
   selNewTab: boolean
   scrollRetainerHeight: number
   empty: boolean

@@ -31,6 +31,7 @@ export * from 'src/services/tabs.fg.move'
 export * from 'src/services/tabs.fg.create'
 export * from 'src/services/tabs.fg.media'
 export * from 'src/services/tabs.fg.sorting'
+export * from 'src/services/tabs.fg.badge'
 
 export interface TabsReactiveState {
   pinnedIds: ID[]
@@ -110,7 +111,8 @@ export function mutateNativeTabToSideberyTab(nativeTab: T.NativeTab): T.Tab {
   if (tab.relGroupId === undefined) tab.relGroupId = D.NOID
   if (tab.lvl === undefined) tab.lvl = 0
   if (tab.sel === undefined) tab.sel = false
-  if (tab.updated === undefined) tab.updated = false
+  if (tab.badge === undefined) tab.badge = false
+  if (tab.badgeUrgent === undefined) tab.badgeUrgent = false
   if (tab.loading === undefined) tab.loading = false
   if (tab.status === undefined) tab.status = 'complete'
   if (tab.warn === undefined) tab.warn = false
@@ -147,8 +149,11 @@ export function mutateNativeTabToSideberyTab(nativeTab: T.NativeTab): T.Tab {
       sel: tab.sel,
       selLock: tab.selLock,
       warn: tab.warn,
-      notificationBadgeCount: null,
-      updated: tab.updated,
+      badge: false,
+      badgeUrgent: false,
+      badgeBg: null,
+      badgeFg: null,
+      hasUrgentDescendant: false,
       unread: !!tab.unread,
       flash: false,
       branchColor: null,
@@ -163,37 +168,6 @@ export function mutateNativeTabToSideberyTab(nativeTab: T.NativeTab): T.Tab {
 export function reactivateTab(tab: T.Tab) {
   if (!tab.reactive || !reactFn) return
   tab.reactive = reactFn(tab.reactive)
-}
-
-export function updateNotificationBadgeCountTabs(): void {
-  const regexp = new RegExp(Settings.state.tabsNotificationBadgeRegExpPattern)
-  for (const tab of Tabs.list) {
-    updateNotificationBadgeCountTab(tab, regexp)
-  }
-}
-
-export function updateNotificationBadgeCountTab(
-  tab: T.Tab,
-  regexp: RegExp | undefined = undefined
-): void {
-  if (
-    Settings.state.tabsNotificationBadgeScope === 'none' ||
-    (Settings.state.tabsNotificationBadgeScope === 'norm' && tab.pinned) ||
-    (Settings.state.tabsNotificationBadgeScope === 'pin' && !tab.pinned)
-  ) {
-    tab.reactive.notificationBadgeCount = null
-    return
-  }
-
-  const matches = (regexp ?? new RegExp(Settings.state.tabsNotificationBadgeRegExpPattern)).exec(
-    tab.title
-  )
-  if (!matches) {
-    tab.reactive.notificationBadgeCount = null
-  } else {
-    const notificationBadgeCount = matches.find((e, i) => i > 0 && e) ?? null
-    tab.reactive.notificationBadgeCount = notificationBadgeCount
-  }
 }
 
 export function getStatus(tab: T.Tab): TabStatus {
@@ -247,6 +221,7 @@ export async function load(src?: LoadSrc): Promise<void> {
 
   Tabs.updateNativeTabsVisibility()
   if (!sessionRestoreTabOnly) Tabs.cacheTabsData(1000)
+  const dts = Date.now()
   Tabs.list.forEach(t => {
     Links.addTab(t)
 
@@ -256,6 +231,9 @@ export async function load(src?: LoadSrc): Promise<void> {
 
     // Recalc branch length for folded (invisible) parent tabs
     if (t.folded && t.invisible) Tabs.recalcBranchLen(t.id)
+
+    // Set url update timestamp
+    t.urlUpdated = dts
   })
 
   for (const panel of Sidebar.panels) {
@@ -269,7 +247,8 @@ export async function load(src?: LoadSrc): Promise<void> {
 
   if (Settings.state.colorizeTabs) Tabs.colorizeTabs()
   if (Settings.state.colorizeTabsBranches) Tabs.colorizeBranches()
-  if (Settings.state.tabsNotificationBadgeScope !== 'none') Tabs.updateNotificationBadgeCountTabs()
+  if (Settings.state.tabsBadge) Tabs.parseBadgeRegexpRules()
+  if (Tabs.badgeRulesEnabled) Tabs.updateBadges()
 
   ready = true
 

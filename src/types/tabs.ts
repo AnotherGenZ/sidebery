@@ -15,7 +15,9 @@ export interface Tab extends NativeTab {
   lvl: number
   sel: boolean
   selLock: boolean
-  updated: boolean
+  badge: boolean | string
+  badgeUrgent: boolean
+  urgentTabIds?: Set<ID>
   loading: boolean | 'ok' | 'err'
   warn: boolean
   unread?: boolean
@@ -38,6 +40,7 @@ export interface Tab extends NativeTab {
   moving?: boolean
   removing?: boolean
   flashAnimationTimeout?: number
+  urlUpdated?: number
 
   reactive: ReactiveTabProps
   sessionData?: TabSessionData
@@ -70,8 +73,11 @@ export interface ReactiveTabProps {
   sel: boolean
   selLock: boolean
   warn: boolean
-  notificationBadgeCount: string | null
-  updated: boolean
+  badge: boolean | string
+  badgeUrgent: boolean
+  badgeBg: string | null
+  badgeFg: string | null
+  hasUrgentDescendant: boolean
   unread: boolean
   flash: boolean
   color: string | null

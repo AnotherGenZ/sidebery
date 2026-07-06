@@ -99,49 +99,27 @@ section(ref="el")
     v-model:value="Settings.state.tabsUnreadMark"
     :default="DEFAULT_SETTINGS.tabsUnreadMark"
     @update:value="Settings.saveDebounced(150)")
-  SelectField(
-    label="settings.tabs_update_mark"
-    optLabel="settings.tabs_update_mark_"
-    dbg="tabsUpdateMark"
-    v-model:value="Settings.state.tabsUpdateMark"
-    :default="DEFAULT_SETTINGS.tabsUpdateMark"
-    :opts="Settings.getOpts('tabsUpdateMark')"
-    :folded="true"
+  ToggleField(
+    label="settings.tabs_badge"
+    dbg="tabsBadge"
+    v-model:value="Settings.state.tabsBadge"
+    :default="DEFAULT_SETTINGS.tabsBadge"
     @update:value="Settings.saveDebounced(150)")
   .sub-fields
-    ToggleField(
-      label="settings.tabs_update_mark_first"
-      dbg="tabsUpdateMarkFirst"
-      v-model:value="Settings.state.tabsUpdateMarkFirst"
-      :default="DEFAULT_SETTINGS.tabsUpdateMarkFirst"
-      @update:value="Settings.saveDebounced(150)")
-  SelectField(
-    label="settings.tabs_notification_badge_scope"
-    optLabel="settings.tabs_notification_badge_scope_"
-    v-model:value="Settings.state.tabsNotificationBadgeScope"
-    :opts="Settings.getOpts('tabsNotificationBadgeScope')"
-    :folded="true"
-    @update:value="Settings.saveDebounced(150)")
-  .sub-fields
-    SelectField(
-      label="settings.tabs_notification_badge_style"
-      optLabel="settings.tabs_notification_badge_style_"
-      v-model:value="Settings.state.tabsNotificationBadgeStyle"
-      :opts="Settings.getOpts('tabsNotificationBadgeStyle')"
-      :folded="false"
-      :inactive="Settings.state.tabsNotificationBadgeScope === 'none'"
-      @update:value="Settings.saveDebounced(150)")
-    TextField(
-      ref="tabsNotificationBadgeRegExpPatternEl"
-      label="settings.tabs_notification_badge_regexp_pattern"
-      :note="translate('settings.tabs_notification_badge_regexp_pattern_info')"
-      :line="true"
-      :valid="tabsNotificationBadgeRegExpPatternValid"
-      input-width="50"
-      v-model:value="tabsNotificationBadgeRegExpPatternInput"
-      :inactive="Settings.state.tabsNotificationBadgeScope === 'none'"
-      @update:value="onTabsNotificationBadgeRegExpPatternUpdate"
-      @blur="onTabsNotificationBadgeRegExpPatternBlur")
+    TextField.tabsBadgeRulesField(
+      ref="badgeRulesEl"
+      label="settings.tabs_badge_rules"
+      dbg="tabsBadgeRules"
+      v-model:value="Settings.state.tabsBadgeRules"
+      or="---"
+      input-width="66"
+      :valid="tabsBadgeRulesValid"
+      :padding="12"
+      :inactive="!Settings.state.tabsBadge"
+      :default="DEFAULT_SETTINGS.tabsBadgeRules"
+      :fnote="translate('settings.tabs_badge_rules_note')"
+      @update:value="onTabsBadgeRulesUpdate"
+      @blur="onTabsBadgeRulesBlur")
   CountField.-inline(
     label="settings.tabs_reload_limit"
     dbg="tabsReloadLimit"
@@ -682,7 +660,7 @@ section(ref="el")
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, useTemplateRef } from 'vue'
 import * as Utils from 'src/utils'
 import { translate } from 'src/dict'
 import type { TextInputComponent } from 'src/types'
@@ -704,6 +682,7 @@ const tabsTreeEl = ref<HTMLElement | null>(null)
 const tabsColorEl = ref<HTMLElement | null>(null)
 const tabsPreviewEl = ref<HTMLElement | null>(null)
 const nativeTabsEl = ref<HTMLElement | null>(null)
+const badgeRulesEl = useTemplateRef<TextInputComponent>('badgeRulesEl')
 
 const newTabPosRelativeToActiveTab = computed<boolean>(() => {
   return (
@@ -820,33 +799,31 @@ async function togglePreviewTabs() {
   Settings.saveDebounced(150)
 }
 
-const tabsNotificationBadgeRegExpPatternEl = ref<TextInputComponent | null>(null)
-const tabsNotificationBadgeRegExpPatternValid = ref('')
-const tabsNotificationBadgeRegExpPatternInput = ref(
-  Settings.state.tabsNotificationBadgeRegExpPattern
-)
-const tabsNotificationBadgeRegExpPatternValidate = Utils.debounce((value: string): void => {
-  if (!value) {
-    tabsNotificationBadgeRegExpPatternValid.value = ''
-  } else {
+const tabsBadgeRulesValid = ref('')
+const validateTabsBadgeRulesDebounced = Utils.debounce(validateTabsBadgeRules)
+function validateTabsBadgeRules(value: string) {
+  for (const rule of value.trim().split('\n')) {
     try {
-      new RegExp(value)
-      tabsNotificationBadgeRegExpPatternValid.value = 'valid'
-      Settings.state.tabsNotificationBadgeRegExpPattern = value
-    } catch (e) {
-      tabsNotificationBadgeRegExpPatternValid.value = 'invalid'
+      Tabs.parseBadgeRegexpRule(rule)
+    } catch (err) {
+      if (err === 'no rule') continue
+      tabsBadgeRulesValid.value = 'invalid'
+      return false
     }
   }
-})
-
-function onTabsNotificationBadgeRegExpPatternUpdate(value: string): void {
-  tabsNotificationBadgeRegExpPatternValidate(321, value)
+  tabsBadgeRulesValid.value = ''
+  return true
+}
+function onTabsBadgeRulesUpdate(value: string): void {
+  Settings.state.tabsBadgeRules = value
   Settings.saveDebounced(500)
+  validateTabsBadgeRulesDebounced(100, value)
 }
 
-function onTabsNotificationBadgeRegExpPatternBlur(): void {
-  if (tabsNotificationBadgeRegExpPatternValid.value === 'invalid')
-    tabsNotificationBadgeRegExpPatternEl.value?.error()
+function onTabsBadgeRulesBlur(): void {
+  if (tabsBadgeRulesValid.value === 'invalid') {
+    badgeRulesEl.value?.error()
+  }
 }
 
 onMounted(() => {
@@ -857,5 +834,8 @@ onMounted(() => {
   SetupPage.registerEl('settings_tabs_colorization', tabsColorEl.value)
   SetupPage.registerEl('settings_tabs_preview', tabsPreviewEl.value)
   SetupPage.registerEl('settings_tabs_native', nativeTabsEl.value)
+
+  badgeRulesEl.value?.recalcTextHeight()
+  validateTabsBadgeRules(Settings.state.tabsBadgeRules)
 })
 </script>

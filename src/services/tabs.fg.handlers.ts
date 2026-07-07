@@ -829,76 +829,78 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
 
   // Url
   let branchColorizationNeeded = false
-  if (change.url !== undefined && change.url !== tab.url) {
-    const isInternal = change.url.startsWith(D.ADDON_HOST)
-    const isGroup = isInternal && Utils.isGroupUrl(change.url)
-    if (tab.isGroup !== isGroup) {
-      tab.reactive.isGroup = tab.isGroup = isGroup
-    }
-    tab.internal = isInternal
-    Tabs.cacheTabsData()
+  if (change.url !== undefined) {
+    if (change.url !== tab.url) {
+      const isInternal = change.url.startsWith(D.ADDON_HOST)
+      const isGroup = isInternal && Utils.isGroupUrl(change.url)
+      if (tab.isGroup !== isGroup) {
+        tab.reactive.isGroup = tab.isGroup = isGroup
+      }
+      tab.internal = isInternal
+      Tabs.cacheTabsData()
 
-    // Hash messaging
-    if (isGroup && tab.cookieStoreId !== D.DEFAULT_CONTAINER_ID && change.url.endsWith('!s!~')) {
-      IPPC.onHashMsg(tab, change.url)
-    }
+      // Hash messaging
+      if (isGroup && tab.cookieStoreId !== D.DEFAULT_CONTAINER_ID && change.url.endsWith('!s!~')) {
+        IPPC.onHashMsg(tab, change.url)
+      }
 
-    // Reset favicon (to cached)
-    if (tab.internal || !Utils.sameStart(change.url, tab.url, 16)) {
-      change.favIconUrl = Favicons.getFavicon(change.url)
-    }
+      // Reset favicon (to cached)
+      if (tab.internal || !Utils.sameStart(change.url, tab.url, 16)) {
+        change.favIconUrl = Favicons.getFavicon(change.url)
+      }
 
-    // Update URL of the linked group page (for pinned tab)
-    if (tab.pinned && tab.relGroupId !== undefined) {
-      const groupTab = Tabs.byId[tab.relGroupId]
-      if (groupTab) {
-        const groupUrl = Utils.createGroupUrl(tab.title, change.url, tab.cookieStoreId)
-        browser.tabs.update(groupTab.id, { url: groupUrl }).catch(err => {
-          Logs.err('Tabs.onTabUpdated: Cannot reload related group page:', err)
+      // Update URL of the linked group page (for pinned tab)
+      if (tab.pinned && tab.relGroupId !== undefined) {
+        const groupTab = Tabs.byId[tab.relGroupId]
+        if (groupTab) {
+          const groupUrl = Utils.createGroupUrl(tab.title, change.url, tab.cookieStoreId)
+          browser.tabs.update(groupTab.id, { url: groupUrl }).catch(err => {
+            Logs.err('Tabs.onTabUpdated: Cannot reload related group page:', err)
+          })
+        }
+      }
+
+      // Reset pause state
+      if (tab.mediaPaused) {
+        Tabs.checkPausedMedia(tabId).then(stillPaused => {
+          if (stillPaused === null || stillPaused) return
+          tab.mediaPaused = false
+          tab.reactive.mediaPaused = false
+          Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
         })
       }
+
+      // Re-color tab
+      if (Settings.state.colorizeTabs) {
+        Tabs.colorizeTabDebounced(tabId, 120)
+      }
+
+      // Check if branch re-colorization is needed
+      if (Settings.state.colorizeTabsBranches) {
+        branchColorizationNeeded = tab.isParent && tab.lvl === 0
+        if (tab.lvl === 0) tab.reactive.branchColor = null
+      }
+
+      // Check if tab should be moved to another panel
+      if (Tabs.moveRules.length && !tab.pinned && change.url !== 'about:blank') {
+        Tabs.moveByRule(tabId, 120)
+      }
+
+      // Update url counter
+      Links.updTab(tab, change.url)
+
+      // Update filtered results
+      if (Search.active && Sidebar.activePanelId === tab.panelId && !Sidebar.subPanelActive) {
+        Search.searchDebounced(500)
+      }
+
+      // Update group
+      const groupTab = Tabs.getGroupTab(tab)
+      if (groupTab && !groupTab.discarded) Tabs.updateGroupOrItsChild(groupTab, nativeTab.id)
     }
-
-    // Reset pause state
-    if (tab.mediaPaused) {
-      Tabs.checkPausedMedia(tabId).then(stillPaused => {
-        if (stillPaused === null || stillPaused) return
-        tab.mediaPaused = false
-        tab.reactive.mediaPaused = false
-        Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
-      })
-    }
-
-    // Re-color tab
-    if (Settings.state.colorizeTabs) {
-      Tabs.colorizeTabDebounced(tabId, 120)
-    }
-
-    // Check if branch re-colorization is needed
-    if (Settings.state.colorizeTabsBranches) {
-      branchColorizationNeeded = tab.isParent && tab.lvl === 0
-      if (tab.lvl === 0) tab.reactive.branchColor = null
-    }
-
-    // Check if tab should be moved to another panel
-    if (Tabs.moveRules.length && !tab.pinned && change.url !== 'about:blank') {
-      Tabs.moveByRule(tabId, 120)
-    }
-
-    // Update url counter
-    Links.updTab(tab, change.url)
-
-    // Update filtered results
-    if (Search.active && Sidebar.activePanelId === tab.panelId && !Sidebar.subPanelActive) {
-      Search.searchDebounced(500)
-    }
-
-    // Update group
-    const groupTab = Tabs.getGroupTab(tab)
-    if (groupTab && !groupTab.discarded) Tabs.updateGroupOrItsChild(groupTab, nativeTab.id)
 
     // Set url update timestamp
-    if (!isInternal) tab.urlUpdated = Date.now()
+    if (!tab.internal) tab.urlUpdated = Date.now()
   }
 
   // Handle Firefox internal favicon

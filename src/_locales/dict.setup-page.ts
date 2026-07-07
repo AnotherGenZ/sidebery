@@ -2939,7 +2939,7 @@ Available parameters:
 - \`pinned\`: Applies the rule only to pinned tabs.
 - \`normal\`: Applies the rule only to non-pinned tabs.
 - \`value:{Text}\`: Sets a static value for the badge.
-- \`minUrlAge:{Milliseconds}\`: Applies the rule only if the URL age is greater than or equal to \`{Milliseconds}\`. Ignored for unloaded and active tabs.`,
+- \`minUrlAge:{Milliseconds}\`: Applies the rule only if the URL age is greater than or equal to \`{Milliseconds}\`. Ignored for unloaded, loading and active tabs.`,
     de: `Eine durch Zeilenumbrüche getrennte Liste von Badge-Regeln. Eine Regel besteht aus optionalen Parametern, die durch ein Semikolon gefolgt von einem Leerzeichen getrennt sind: \`; \`. Beispiele:
 \`\`\`
 title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
@@ -2954,7 +2954,7 @@ Verfügbare Parameter:
 - \`pinned\`: Wendet die Regel nur auf angepinnte Tabs an.
 - \`normal\`: Wendet die Regel nur auf nicht angepinnte Tabs an.
 - \`value:{Text}\`: Legt einen statischen Wert für das Badge fest.
-- \`minUrlAge:{Milliseconds}\`: Wendet die Regel nur an, wenn das URL-Alter größer oder gleich \`{Milliseconds}\` ist. Wird für nicht geladene und aktive Tabs ignoriert.`,
+- \`minUrlAge:{Milliseconds}\`: Wendet die Regel nur an, wenn das URL-Alter größer oder gleich \`{Milliseconds}\` ist. Für entladene, ladende und aktive Tabs ignoriert.`,
     fr: `Une liste de règles de badges séparées par des sauts de ligne. Une règle se compose de paramètres optionnels séparés par un point-virgule suivi d'un espace : \`; \`. Exemples :
 \`\`\`
 title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
@@ -3014,7 +3014,7 @@ url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 - \`pinned\`: Применяет правило только к закрепленным вкладкам.
 - \`normal\`: Применяет правило только к незакрепленным вкладкам.
 - \`value:{Text}\`: Задает статическое значение для индикатора.
-- \`minUrlAge:{Milliseconds}\`: Применяет правило только в том случае, если возраст URL больше или равен \`{Milliseconds}\`. Игнорируется для выгруженных и активных вкладок.`,
+- \`minUrlAge:{Milliseconds}\`: Применяет правило только в том случае, если возраст URL больше или равен \`{Milliseconds}\`. Игнорируется для выгруженных, загружаемых и активных вкладок.`,
     zh_CN: `换行符分隔的徽标规则列表。每条规则由可选参数组成，参数之间用分号加空格 \`; \` 分隔。示例：
 \`\`\`
 title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent

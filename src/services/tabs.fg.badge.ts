@@ -99,6 +99,7 @@ export function updateBadge(tab: T.Tab, change?: browser.tabs.ChangeInfo) {
           if (urlAge === undefined) continue
           if (change?.title === undefined) continue
           if (urlAge < rule.minUrlAge) continue
+          if (tab.status === 'loading') continue
         }
         tab.reactive.badge = tab.badge = badgeValue
         tab.reactive.badgeBg = rule.bg ?? null

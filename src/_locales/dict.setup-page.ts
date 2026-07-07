@@ -2932,8 +2932,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Available parameters:
-- \`url:{RegExp} and/or title:{RegExp}\`: A regular expression to match the tab and optionally retrieve the badge value via a named group: \`(?<v>...)\`. If your \`{RegExp}\` contains a semicolon followed by a space \`; \`, escape the space with a backslash: \`;\\ \`.
-- \`bg:{Color} and/or fg:{Color}\`: The color of the badge background or text.
+- \`url:{RegExp}\` and/or \`title:{RegExp}\`: A regular expression to match the tab and optionally retrieve the badge value via a named group: \`(?<v>...)\`. If your \`{RegExp}\` contains a semicolon followed by a space \`; \`, escape the space with a backslash: \`;\\ \`.
+- \`bg:{Color}\` and/or \`fg:{Color}\`: The color of the badge background or text.
 - \`urgent\`: Makes the badge urgent and propagates this status to parent elements (folded tabs, inactive panels). Ignored for unloaded and active tabs. After tab activation: a value-less badge will be hidden completely, and a badge with the value will be downgraded to a normal badge.
 - \`notify\`: Shows notification.
 - \`pinned\`: Applies the rule only to pinned tabs.
@@ -2947,8 +2947,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Verfügbare Parameter:
-- \`url:{RegExp} und/oder title:{RegExp}\`: Ein regulärer Ausdruck, um den Tab abzugleichen und optional den Badge-Wert über eine benannte Gruppe abzurufen: \`(?<v>...)\`. Wenn Ihr \`{RegExp}\` ein Semikolon gefolgt von einem Leerzeichen \`; \` enthält, maskieren Sie das Leerzeichen mit einem Backslash: \`;\\ \`.
-- \`bg:{Color} und/oder fg:{Color}\`: Die Farbe des Badge-Hintergrunds oder -Textes.
+- \`url:{RegExp}\` und/oder \`title:{RegExp}\`: Ein regulärer Ausdruck, um den Tab abzugleichen und optional den Badge-Wert über eine benannte Gruppe abzurufen: \`(?<v>...)\`. Wenn Ihr \`{RegExp}\` ein Semikolon gefolgt von einem Leerzeichen \`; \` enthält, maskieren Sie das Leerzeichen mit einem Backslash: \`;\\ \`.
+- \`bg:{Color}\` und/oder \`fg:{Color}\`: Die Farbe des Badge-Hintergrunds oder -Textes.
 - \`urgent\`: Markiert das Badge als dringend und überträgt diesen Status auf übergeordnete Elemente (zugeklappte Tabs, inaktive Panels). Wird für nicht geladene und aktive Tabs ignoriert. Nach der Tab-Aktivierung wird ein Badge ohne Wert vollständig ausgeblendet und ein Badge mit Wert auf ein normales Badge heruntergestuft.
 - \`notify\`: Zeigt eine Benachrichtigung an.
 - \`pinned\`: Wendet die Regel nur auf angepinnte Tabs an.
@@ -2962,8 +2962,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Paramètres disponibles :
-- \`url:{RegExp} et/ou title:{RegExp}\`: Une expression régulière pour faire correspondre l'onglet et éventuellement récupérer la valeur du badge via un groupe nommé : \`(?<v>...)\`. Si votre \`{RegExp}\` contient un point-virgule suivi d'un espace \`; \`, échappez l'espace avec un antislash : \`;\\ \`.
-- \`bg:{Color} et/ou fg:{Color}\`: La couleur d'arrière-plan ou du texte du badge.
+- \`url:{RegExp}\` et/ou \`title:{RegExp}\`: Une expression régulière pour faire correspondre l'onglet et éventuellement récupérer la valeur du badge via un groupe nommé : \`(?<v>...)\`. Si votre \`{RegExp}\` contient un point-virgule suivi d'un espace \`; \`, échappez l'espace avec un antislash : \`;\\ \`.
+- \`bg:{Color}\` et/ou \`fg:{Color}\`: La couleur d'arrière-plan ou du texte du badge.
 - \`urgent\`: Rend le badge urgent et propage ce statut aux éléments parents (onglets réduits, panneaux inactifs). Ignoré pour les onglets non chargés et actifs. Après l'activation de l'onglet : un badge sans valeur sera complètement masqué, et un badge avec valeur sera rétrogradé en badge normal.
 - \`notify\`: Affiche une notification.
 - \`pinned\`: Applique la règle uniquement aux onglets épinglés.
@@ -2977,8 +2977,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Elérhető paraméterek:
-- \`url:{RegExp} és/vagy title:{RegExp}\`: Egy reguláris kifejezés a lap illesztéséhez, és opcionálisan a jelvény értékének kinyeréséhez egy elnevezett csoporton keresztül: \`(?<v>...)\`. Ha a \`{RegExp}\` pontosvesszőt és utána szóközt \`; \` tartalmaz, a szóközt egy fordított perjellel kell levédeni: \`;\\ \`.
-- \`bg:{Color} és/vagy fg:{Color}\`: A jelvény hátterének vagy szövegének színe.
+- \`url:{RegExp}\` és/vagy \`title:{RegExp}\`: Egy reguláris kifejezés a lap illesztéséhez, és opcionálisan a jelvény értékének kinyeréséhez egy elnevezett csoporton keresztül: \`(?<v>...)\`. Ha a \`{RegExp}\` pontosvesszőt és utána szóközt \`; \` tartalmaz, a szóközt egy fordított perjellel kell levédeni: \`;\\ \`.
+- \`bg:{Color}\` és/vagy \`fg:{Color}\`: A jelvény hátterének vagy szövegének színe.
 - \`urgent\`: Sürgőssé teszi a jelvényt, és ezt az állapotot továbbítja a szülő elemeknek (összecsukott lapok, inaktív panelek). A nem betöltött és az aktív lapoknál figyelmen kívül marad. A lap aktiválása után: az érték nélküli jelvény teljesen eltűnik, az értékkel rendelkező jelvény pedig normál jelvénnyé fokozódik le.
 - \`notify\`: Értesítést jelenít meg.
 - \`pinned\`: A szabályt csak a rögzített lapokra alkalmazza.
@@ -2992,8 +2992,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Dostępne parametry:
-- \`url:{RegExp} i/lub title:{RegExp}\`: Wyrażenie regularne do dopasowania karty i opcjonalnego pobrania wartości plakietki za pomocą nazwanej grupy: \`(?<v>...)\`. Jeśli \`{RegExp}\` zawiera średnik ze spacją \`; \`, należy uciec spację ukośnikiem wstecznym: \`;\\ \`.
-- \`bg:{Color} i/lub fg:{Color}\`: Kolor tła lub tekstu plakietki.
+- \`url:{RegExp}\` i/lub \`title:{RegExp}\`: Wyrażenie regularne do dopasowania karty i opcjonalnego pobrania wartości plakietki za pomocą nazwanej grupy: \`(?<v>...)\`. Jeśli \`{RegExp}\` zawiera średnik ze spacją \`; \`, należy uciec spację ukośnikiem wstecznym: \`;\\ \`.
+- \`bg:{Color}\` i/lub \`fg:{Color}\`: Kolor tła lub tekstu plakietki.
 - \`urgent\`: Nadaje plakietce status pilnej i propaguje go do elementów nadrzędnych (zwinięte karty, nieaktywne panele). Ignorowane dla niezaładowanych i aktywnych kart. Po aktywacji karty: plakietka bez wartości zostanie całkowicie ukryta, a plakietka z wartością zostanie obniżona do zwykłej plakietki.
 - \`notify\`: Pokazuje powiadomienie.
 - \`pinned\`: Stosuje regułę tylko do przypiętych kart.
@@ -3007,8 +3007,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Доступные параметры:
-- \`url:{RegExp} и/или title:{RegExp}\`: Регулярное выражение для сопоставления со вкладкой и (опционально) извлечения значения индикатора через именованную группу: \`(?<v>...)\`. Если ваше \`{RegExp}\` содержит точку с запятой и пробел \`; \`, экранируйте пробел обратным слешем: \`;\\ \`.
-- \`bg:{Color} и/или fg:{Color}\`: Цвет фона или текста индикатора.
+- \`url:{RegExp}\` и/или \`title:{RegExp}\`: Регулярное выражение для сопоставления со вкладкой и (опционально) извлечения значения индикатора через именованную группу: \`(?<v>...)\`. Если ваше \`{RegExp}\` содержит точку с запятой и пробел \`; \`, экранируйте пробел обратным слешем: \`;\\ \`.
+- \`bg:{Color}\` и/или \`fg:{Color}\`: Цвет фона или текста индикатора.
 - \`urgent\`: Делает индикатор важным (urgent) и передает этот статус родительским элементам (свернутым вкладкам, неактивным панелям). Игнорируется для выгруженных и активных вкладок. После активации вкладки: индикатор без значения полностью скрывается, а индикатор со значением понижается до обычного.
 - \`notify\`: Показывает уведомление.
 - \`pinned\`: Применяет правило только к закрепленным вкладкам.
@@ -3022,8 +3022,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 可用参数：
-- \`url:{RegExp} 和/或 title:{RegExp}\`: 用于匹配标签页的正则表达式，并可通过命名捕获组 \`(?<v>...)\` 选择性地获取徽标值。如果你的 \`{RegExp}\` 包含分号加空格 \`; \`，请用反斜杠转义该空格：\`;\\ \`.
-- \`bg:{Color} 和/或 fg:{Color}\`: 徽标背景或文本的颜色。
+- \`url:{RegExp}\` 和/或 \`title:{RegExp}\`: 用于匹配标签页的正则表达式，并可通过命名捕获组 \`(?<v>...)\` 选择性地获取徽标值。如果你的 \`{RegExp}\` 包含分号加空格 \`; \`，请用反斜杠转义该空格：\`;\\ \`.
+- \`bg:{Color}\` 和/或 \`fg:{Color}\`: 徽标背景或文本的颜色。
 - \`urgent\`: 将徽标设为紧急状态，并将此状态传递给父级元素（折叠的标签页、非活动面板）。对未加载的和活动标签页忽略此参数。标签页激活后：无值的徽标将完全隐藏，有值的徽标将降级为普通徽标。
 - \`notify\`: 显示通知。
 - \`pinned\`: 仅将规则应用于固定标签页。
@@ -3037,8 +3037,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 可用參數：
-- \`url:{RegExp} 和/或 title:{RegExp}\`: 用於比對分頁的正規表示式，並可透過命名擷取群組 \`(?<v>...)\` 選擇性地獲取徽章值。如果您的 \`{RegExp}\` 包含分號加空格 \`; \`，請用反斜線逸出該空格：\`;\\ \`.
-- \`bg:{Color} 和/或 fg:{Color}\`: 徽章背景或文字的顏色。
+- \`url:{RegExp}\` 和/或 \`title:{RegExp}\`: 用於比對分頁的正規表示式，並可透過命名擷取群組 \`(?<v>...)\` 選擇性地獲取徽章值。如果您的 \`{RegExp}\` 包含分號加空格 \`; \`，請用反斜線逸出該空格：\`;\\ \`.
+- \`bg:{Color}\` 和/或 \`fg:{Color}\`: 徽章背景或文字的顏色。
 - \`urgent\`: 將徽章設為緊急狀態，並將此狀態傳遞給父級元素（摺疊的分頁、非活動面板）。對未載入的和活動分頁忽略此參數。分頁啟用後：無值的徽章將完全隱藏，有值的徽章將升級或降級為普通徽章。
 - \`notify\`: 顯示通知。
 - \`pinned\`: 僅將規則套用於固定分頁。
@@ -3052,8 +3052,8 @@ minUrlAge:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 利用可能なパラメータ:
-- \`url:{RegExp} and/or title:{RegExp}\`: タブをマッチングし、オプションで名前付きグループ \`(?<v>...)\` を介してバッジの値を取得するための正規表現。もし \`{RegExp}\` にセミコロンとスペース \`; \` が含まれる場合は、スペースをバックスラッシュでエスケープしてください: \`;\\ \`。
-- \`bg:{Color} and/or fg:{Color}\`: バッジの背景色または文字色。
+- \`url:{RegExp}\` および／または \`title:{RegExp}\`: タブをマッチングし、オプションで名前付きグループ \`(?<v>...)\` を介してバッジの値を取得するための正規表現。もし \`{RegExp}\` にセミコロンとスペース \`; \` が含まれる場合は、スペースをバックスラッシュでエスケープしてください: \`;\\ \`。
+- \`bg:{Color}\` および／または \`fg:{Color}\`: バッジの背景色または文字色。
 - \`urgent\`: バッジを緊急状態にし、このステータスを親要素（折りたたまれたタブ、非アクティブなパネル）に伝播させます。未読み込みのタブおよびアクティブなタブでは無視されます。タブがアクティブになった後、値のないバッジは完全に非表示になり、値のあるバッジは通常のバッジにダウングレードされます。
 - \`notify\`: 通知を表示します。
 - \`pinned\`: ピン留めされたタブにのみルールを適用します。

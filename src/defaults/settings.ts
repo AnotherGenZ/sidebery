@@ -98,8 +98,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   tabsRmUndoNote: true,
   tabsUnreadMark: false,
   tabsBadge: true,
-  tabsBadgeRules: String.raw`title:\((?<v>\d+)\)|\[(?<v>\d+)\]; urgent
-minUrlAge:5000; urgent`,
+  tabsBadgeRules: String.raw`minUrlAge:5000; urgent`,
   tabsReloadLimit: 5,
   tabsReloadLimitNotif: true,
   showNewTabBtns: true,

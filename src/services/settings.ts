@@ -65,13 +65,13 @@ export async function load(): Promise<void> {
       state.tabsBadge = false
     } else if (tabsUpdateMark === 'norm') {
       state.tabsBadgeRules = state.tabsBadgeRules.replace(
-        '\nminUrlAge:5000; urgent',
-        '\nminUrlAge:5000; urgent; normal'
+        'minUrlAge:5000; urgent',
+        'minUrlAge:5000; urgent; normal'
       )
     } else if (tabsUpdateMark === 'pin') {
       state.tabsBadgeRules = state.tabsBadgeRules.replace(
-        '\nminUrlAge:5000; urgent',
-        '\nminUrlAge:5000; urgent; pinned'
+        'minUrlAge:5000; urgent',
+        'minUrlAge:5000; urgent; pinned'
       )
     }
     delete state.tabsUpdateMark

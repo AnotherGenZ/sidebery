@@ -52,14 +52,14 @@ let deadOnArrival = false
 let tooltipUpdTimeout: number | undefined = undefined
 
 function dbgStr() {
-  let m = state.mode === Mode.Nope ? 'Nope' : 'Inline'
-  if (state.mode === Mode.InPage) m = 'InPage'
+  let m = state.mode === Mode.Nope ? 'Nope' : 'Sidebar'
+  if (state.mode === Mode.InPage) m = 'Page'
 
   let s = state.status === Status.Closed ? 'Closed' : 'Closing'
   if (state.status === Status.Open) s = 'Open'
   else if (state.status === Status.Opening) s = 'Opening'
 
-  return `mode: ${m}, status: ${s}`
+  return `mode: ${m}, status: ${s}, targetTabId: ${state.targetTabId}, doa: ${deadOnArrival}`
 }
 
 export function setTargetTab(tabId: ID) {

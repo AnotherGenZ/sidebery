@@ -332,7 +332,7 @@ async function showSPreview(tab: Tab) {
     closeSPreview()
     return
   }
-
+  if (state.mode !== Mode.InSidebar) return
   if (sPreviewTabId === tab.id) return
   if (!sPreviewEl) return
 

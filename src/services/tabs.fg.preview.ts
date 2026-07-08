@@ -30,7 +30,6 @@ export const state = {
   mode: Mode.Nope,
   modeFallback: false,
 
-  popupWinId: NOID,
   targetTabId: NOID,
 
   openTimeout: undefined as number | undefined,
@@ -313,13 +312,11 @@ export async function closePPreview() {
 
   if (state.status === Status.Open) {
     state.status = Status.Closing
-    if (state.popupWinId !== NOID) await browser.windows.remove(state.popupWinId)
-    else if (Settings.state.previewTabsMode === 'p' && IPC.state.previewConnection) {
+    if (Settings.state.previewTabsMode === 'p' && IPC.state.previewConnection) {
       IPC.sendToPreview('close')
     } else {
       Tabs.reactive.inlinePreviewImg = ''
     }
-    state.popupWinId = NOID
     state.status = Status.Closed
   }
 }

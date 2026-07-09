@@ -445,9 +445,14 @@ async function openWindow(
     for (const tab of panel) {
       if (tab.panelId === GLOB_PINNED_ID) tab.panelId = NOID
 
+      let url: string | undefined = tab.url
+      if (Utils.isGroupUrl(url)) url = Utils.updateGroupUrlBase(url)
+      else if (Utils.isPlaceholderUrl(url)) url = Utils.updatePlaceholderUrlBase(url)
+      else url = Utils.sanitizeUrl(url, tab.title)
+
       const tabInfo: ItemInfo = {
         id: index++,
-        url: Utils.sanitizeUrl(tab.url, tab.title),
+        url,
         title: tab.title,
         parentId: NOID,
         folded: tab.folded,
@@ -459,12 +464,6 @@ async function openWindow(
       tabsInfoByLvl[tab.lvl ?? 0] = tabInfo
 
       if (tab.pinned) tabInfo.pinned = true
-
-      if (Utils.isGroupUrl(tab.url)) {
-        const index = tab.url.indexOf('group.html') + 10
-        const newUrl = GROUP_URL + tab.url.slice(index)
-        tabInfo.url = newUrl
-      }
 
       if (tab.lvl) {
         const parent = tabsInfoByLvl[tab.lvl - 1]

@@ -134,7 +134,6 @@ import * as Styles from 'src/services/styles.fg'
 import * as Selection from 'src/services/selection.fg'
 import * as Menu from 'src/services/menu.fg'
 import * as Tabs from 'src/services/tabs.fg'
-import * as TabPreview from 'src/services/tabs.fg.preview'
 import * as Mouse from 'src/services/mouse.fg'
 import * as DnD from 'src/services/drag-and-drop.fg'
 import * as Bookmarks from 'src/services/bookmarks.fg'
@@ -235,7 +234,7 @@ const panels = computed<Panel[]>(() => {
 function updSidebarEls() {
   if (panelBoxEl.value) Sidebar.setPanelsBoxEl(panelBoxEl.value)
   if (rootEl.value) Sidebar.registerRootEl(rootEl.value)
-  if (inlinePreview) TabPreview.registerSPreviewEl(tabPreviewEl.value)
+  if (inlinePreview) Preview.registerSPreviewEl(tabPreviewEl.value)
   Sidebar.recalcElementSizes()
   Sidebar.recalcSidebarSize()
   Sidebar.restoreActivePanelScrollPosition()

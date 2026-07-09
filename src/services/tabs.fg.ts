@@ -17,6 +17,7 @@ import * as Notifications from 'src/services/notifications.fg'
 import * as Selection from 'src/services/selection.fg'
 import * as Favicons from 'src/services/favicons.fg'
 import * as Links from 'src/services/links'
+import * as Preview from 'src/services/tabs.fg.preview'
 
 import * as Tabs from 'src/services/tabs.fg'
 
@@ -1794,6 +1795,14 @@ export function expTabsBranch(rootTabId: ID, noRecursive?: boolean, noAutoFold?:
 
   // Update succession
   if (rootTab.active) Tabs.updateSuccessionDebounced(0)
+
+  // Close in-sidebar preview
+  if (
+    Preview.state.status === Preview.Status.Open &&
+    Preview.state.mode === Preview.Mode.InSidebar
+  ) {
+    Preview.closePreview()
+  }
 
   saveTabData(rootTabId)
   cacheTabsData()

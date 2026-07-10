@@ -31,6 +31,7 @@ export let filtered: T.Visit[] | undefined = undefined
 export const setFiltered = (f: T.Visit[]) => (filtered = f)
 export const clearFiltered = () => (filtered = undefined)
 export let byId: Record<ID, T.Visit> = {}
+const lastVisitsByNHIID = new Map<string, T.Visit>()
 
 export let ready = false
 export const setReadyState = (r: boolean) => (ready = r)
@@ -154,6 +155,7 @@ export function unload(): void {
   allLoaded = false
   visits = []
   byId = {}
+  lastVisitsByNHIID.clear()
 
   const historyPanel = Sidebar.panelsById.history
   if (historyPanel) historyPanel.reactive.ready = historyPanel.ready = false
@@ -292,6 +294,7 @@ export async function normalizeHistory(
         if (before !== undefined && vVisit.time > before) continue
         normalized.push(vVisit)
         History.byId[vVisit.id] = vVisit
+        if (!lastVisitsByNHIID.has(item.id)) lastVisitsByNHIID.set(item.id, vVisit)
       }
     } else {
       if (!iVisit) continue
@@ -300,6 +303,7 @@ export async function normalizeHistory(
       if (before !== undefined && iVisit.time > before) continue
       normalized.push(iVisit)
       History.byId[iVisit.id] = iVisit
+      if (!lastVisitsByNHIID.has(item.id)) lastVisitsByNHIID.set(item.id, iVisit)
     }
   }
 
@@ -382,6 +386,7 @@ function onVisit(item: T.NativeHistoryItem): void {
 
   History.visits.unshift(visit)
   History.byId[visit.id] = visit
+  lastVisitsByNHIID.set(item.id, visit)
 
   if (sortNeeded) {
     History.visits.sort((a, b) => b.time - a.time)
@@ -412,7 +417,7 @@ function onRemoved(info: browser.history.RemoveDetails): void {
 }
 
 function onTitleChange(info: browser.history.TitleChangeDetails): void {
-  const visit = History.visits.find(v => v.id.startsWith(info.id))
+  const visit = lastVisitsByNHIID.get(info.id)
   if (visit) {
     visit.reactive.title = visit.title = info.title
     visit.reactive.tooltip = visit.tooltip = visit.title + '\n---\n' + visit.decodedUrl

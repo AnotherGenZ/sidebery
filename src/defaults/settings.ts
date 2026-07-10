@@ -196,7 +196,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   oldBookmarksAfterSave: 'ask',
 
   // History
-  loadHistoryOnDemand: true,
+  // loadHistoryOnDemand: true,
 
   // Appearance
   fontSize: 'm',

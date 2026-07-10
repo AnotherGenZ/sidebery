@@ -126,7 +126,7 @@ async function main(): Promise<void> {
 
   const actPanel = Sidebar.panelsById[Sidebar.activePanelId]
   const initBookmarks = !Settings.state.loadBookmarksOnDemand || Utils.isBookmarksPanel(actPanel)
-  const initHistory = !Settings.state.loadHistoryOnDemand || Utils.isHistoryPanel(actPanel)
+  const initHistory = Utils.isHistoryPanel(actPanel)
   const initSync = Utils.isSyncPanel(actPanel)
   if (Sidebar.hasBookmarks && initBookmarks) Bookmarks.load()
   if (Sidebar.hasHistory && initHistory) History.load()

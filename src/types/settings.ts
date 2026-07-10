@@ -198,7 +198,7 @@ export interface SettingsState {
   oldBookmarksAfterSave: (typeof SETTINGS_OPTIONS.oldBookmarksAfterSave)[number]
 
   // History
-  loadHistoryOnDemand: boolean
+  // loadHistoryOnDemand: boolean
 
   // Appearance
   fontSize: (typeof SETTINGS_OPTIONS.fontSize)[number]

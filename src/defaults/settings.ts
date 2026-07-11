@@ -197,6 +197,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
 
   // History
   // loadHistoryOnDemand: true,
+  historyTitleUpdInterval: 1_100,
 
   // Appearance
   fontSize: 'm',

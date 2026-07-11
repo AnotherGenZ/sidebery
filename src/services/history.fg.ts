@@ -416,9 +416,13 @@ function onRemoved(info: browser.history.RemoveDetails): void {
   if (!Search.active) reactive.days = History.recalcDays()
 }
 
+const changesBuf = new Map<T.Visit, string>()
 function onTitleChange(info: browser.history.TitleChangeDetails): void {
   const visit = lastVisitsByNHIID.get(info.id)
-  if (visit) {
+  if (!visit) return
+  if (Settings.state.historyTitleUpdInterval > 0) {
+    changesBuf.set(visit, info.title)
+  } else {
     visit.reactive.title = visit.title = info.title
     visit.reactive.tooltip = visit.tooltip = visit.title + '\n---\n' + visit.decodedUrl
     if (visit.noTitle) {
@@ -428,11 +432,36 @@ function onTitleChange(info: browser.history.TitleChangeDetails): void {
   }
 }
 
+function updateVisitTitle(title: string, visit: T.Visit) {
+  visit.reactive.title = visit.title = title
+  visit.reactive.tooltip = visit.tooltip = visit.title + '\n---\n' + visit.decodedUrl
+  if (visit.noTitle) {
+    visit.noTitle = false
+    if (!Search.active) recalcToday()
+  }
+}
+
+let titleUpdateInterval: number | undefined
+function startTitleChangeIntervalDebouncer() {
+  titleUpdateInterval = setInterval(() => {
+    if (!changesBuf.size) return
+    changesBuf.forEach(updateVisitTitle)
+    changesBuf.clear()
+  }, Settings.state.historyTitleUpdInterval)
+}
+
+function stopTitleChangeIntervalDebouncer() {
+  clearInterval(titleUpdateInterval)
+}
+
 export function setupListeners(): void {
   if (!browser.history) return
   browser.history.onVisited.addListener(onVisit)
   browser.history.onVisitRemoved.addListener(onRemoved)
   browser.history.onTitleChanged.addListener(onTitleChange)
+  if (Settings.state.historyTitleUpdInterval > 0) {
+    startTitleChangeIntervalDebouncer()
+  }
 }
 
 export function resetListeners(): void {
@@ -440,6 +469,7 @@ export function resetListeners(): void {
   browser.history.onVisited.removeListener(onVisit)
   browser.history.onVisitRemoved.removeListener(onRemoved)
   browser.history.onTitleChanged.removeListener(onTitleChange)
+  stopTitleChangeIntervalDebouncer()
 }
 
 const scrollConf: ScrollToOptions = { behavior: 'smooth', top: 0 }

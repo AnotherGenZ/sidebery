@@ -199,6 +199,7 @@ export interface SettingsState {
 
   // History
   // loadHistoryOnDemand: boolean
+  historyTitleUpdInterval: number
 
   // Appearance
   fontSize: (typeof SETTINGS_OPTIONS.fontSize)[number]

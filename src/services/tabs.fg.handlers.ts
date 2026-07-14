@@ -1685,11 +1685,14 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
     return
   }
 
-  // Update previous active tab and store his id
+  const ts = Date.now()
+
+  // Update previous active tab and store its id
   const prevActive = Tabs.byId[Tabs.activeId]
   if (prevActive) {
     prevActive.reactive.active = prevActive.active = false
     Tabs.writeActiveTabsHistory(prevActive, tab)
+    prevActive.inactivated = ts
 
     // Hide previously active tab if needed
     const hideFolded = Settings.state.hideFoldedTabs
@@ -1707,7 +1710,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   if (Settings.state.tabsUnreadMark) {
     tab.reactive.unread = tab.unread = false
   }
-  tab.lastAccessed = Date.now()
+  tab.lastAccessed = ts
   Tabs.setActiveId(info.tabId)
 
   const panel = Sidebar.panelsById[tab.panelId]

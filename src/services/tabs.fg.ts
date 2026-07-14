@@ -233,8 +233,9 @@ export async function load(src?: LoadSrc): Promise<void> {
     // Recalc branch length for folded (invisible) parent tabs
     if (t.folded && t.invisible) Tabs.recalcBranchLen(t.id)
 
-    // Set url update timestamp
+    // Set default timestamps
     t.urlUpdated = dts
+    t.inactivated = dts
   })
 
   for (const panel of Sidebar.panels) {

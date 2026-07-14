@@ -995,7 +995,7 @@ const RELOADING_QUEUE: T.Tab[] = []
 const CHECK_INTERVAL = 300
 const MAX_CHECK_COUNT = 35
 export function reloadTabs(tabIds: ID[] = []): void {
-  if (!Settings.state.tabsReloadLimit || typeof Settings.state.tabsReloadLimit !== 'number') {
+  if (Settings.state.tabsReloadLimit >= tabIds.length) {
     for (const id of tabIds) {
       const tab = Tabs.byId[id]
       if (tab) reloadTab(tab)
@@ -1003,13 +1003,14 @@ export function reloadTabs(tabIds: ID[] = []): void {
     return
   }
 
+  let limit = Settings.state.tabsReloadLimit
   const tabs = []
   for (const tabId of tabIds) {
     let tab = Tabs.byId[tabId]
     if (!tab) continue
 
     if (!RELOADING_QUEUE.includes(tab)) {
-      tab.reactive.status = TabStatus.Pending
+      if (--limit < 0) tab.reactive.status = TabStatus.Pending
       tab.status = 'pending'
       tab.reloadingChecks = 1
       tabs.push(tab)

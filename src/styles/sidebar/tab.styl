@@ -505,15 +505,11 @@
   right: -1px
   bottom: -1px
   border-radius: 50%
-  background-color: var(--status-notice)
+  background-color: var(--tabs-normal-fg)
   opacity: 0
-  transform: scale(0.7, 0.7)
-  transition: opacity var(--d-norm), transform var(--d-norm), background-color var(--d-norm)
-
+  transition: opacity var(--d-norm)
 .Tab[data-loading="false"][data-pending="true"] .pending-mark
   opacity: 1
-  transform: scale(1, 1)
-  background-color: var(--tabs-normal-fg)
 
 // ---
 // -- Count of descendants

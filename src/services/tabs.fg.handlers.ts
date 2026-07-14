@@ -664,6 +664,10 @@ async function onTabCreated(nativeTab: NativeTab, attached?: boolean) {
   if (Sidebar.reactive.hiddenPanelsPopup) {
     Sidebar.closeHiddenPanelsPopup(true)
   }
+
+  if (Tabs.badgeRulesEnabled && tab.discarded) {
+    Tabs.updateBadge(tab)
+  }
 }
 
 const NEW_TAB_MOVE_DELAY = 200

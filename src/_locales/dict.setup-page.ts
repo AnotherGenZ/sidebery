@@ -2929,7 +2929,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 Examples:
 \`\`\`
 title:\\((?<v>\\d+)\\)|\\[(?<v>\\d+)\\]; urgent
-minUrlAge:5000; minInactAge:5000; urgent
+minIdleTime:5000; urgent
 url:github\\.com\\/.+\\/\\d+; title:(?<v>#\\d+); bg:#fff; fg:#000
 \`\`\`
 Available parameters:
@@ -2940,8 +2940,7 @@ Available parameters:
 - \`pinned\`: Applies the rule only to pinned tabs.
 - \`normal\`: Applies the rule only to non-pinned tabs.
 - \`value:{Text}\`: Sets a static value for the badge.
-- \`minUrlAge:{Milliseconds}\`: Applies the rule only if the URL age is greater than or equal to \`{Milliseconds}\` and the tab is not loading.
-- \`minInactAge:{Milliseconds}\`: Applies the rule only if the page has been inactive for at least \`{Milliseconds}\`.`,
+- \`minIdleTime:{Milliseconds}\`: Applies the rule when the tab title changes after the tab has been idle for at least \`{Milliseconds}\`.`,
   },
 
   'settings.tabs_notification_badge_scope': {

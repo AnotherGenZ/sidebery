@@ -98,7 +98,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   tabsRmUndoNote: true,
   tabsUnreadMark: false,
   tabsBadge: true,
-  tabsBadgeRules: 'minUrlAge:5000; minInactAge:5000; urgent',
+  tabsBadgeRules: 'minIdleTime:5000; urgent',
   tabsReloadLimit: 5,
   tabsReloadLimitNotif: true,
   showNewTabBtns: true,

@@ -21,8 +21,7 @@ export interface BadgeRule {
   excludePinned: boolean
   excludeNormal: boolean
   staticValue?: string
-  minUrlAge?: number
-  minInactAge?: number
+  minIdleTime?: number
   bg?: string
   fg?: string
 }
@@ -36,14 +35,11 @@ const NOTIFY_RE = /notify(?:; |;?$)/
 const PINNED_RE = /pinned(?:; |;?$)/
 const NORMAL_RE = /normal(?:; |;?$)/
 const VALUE_RE = /value:(?<v>.+?)(?:; |;?$)/
-const MIN_URL_AGE_RE = /minUrlAge:(?<age>\d+?)(?:; |;?$)/
-const MIN_INACT_AGE_RE = /minInactAge:(?<age>\d+?)(?:; |;?$)/
+const MIN_IDLE_TIME_RE = /minIdleTime:(?<time>\d+?)(?:; |;?$)/
 const VAL_GROUP_RE = /\(?<v>(?:.+?)\)/
 
 const badgeRules: BadgeRule[] = []
-let timestampNeeded = false
-let urlAgeCalcNeeded = false
-let inactAgeCalcNeeded = false
+let idleCalcNeeded = false
 
 export let badgeRulesEnabled = false
 
@@ -82,11 +78,9 @@ export function updateBadge(tab: T.Tab, change?: browser.tabs.ChangeInfo) {
     let titleMatched = false
     let urlVal: string | undefined
     let titleVal: string | undefined
-    let urlAge, inactAge
-    if (timestampNeeded) {
-      const ts = Date.now()
-      if (urlAgeCalcNeeded && tab.urlUpdated !== undefined) urlAge = ts - tab.urlUpdated
-      if (inactAgeCalcNeeded && tab.inactivated !== undefined) inactAge = ts - tab.inactivated
+    let idleTime
+    if (idleCalcNeeded && tab.lastActivity !== undefined) {
+      idleTime = Date.now() - tab.lastActivity
     }
 
     for (const rule of badgeRules) {
@@ -116,15 +110,10 @@ export function updateBadge(tab: T.Tab, change?: browser.tabs.ChangeInfo) {
         const badgeValue = urlVal || titleVal || rule.staticValue || true
         // If the badge is value-less: ignore for active/unloaded tabs
         if (badgeValue === true && (tab.active || tab.discarded)) continue
-        if (rule.minUrlAge !== undefined) {
-          if (urlAge === undefined) continue
+        if (rule.minIdleTime !== undefined) {
           if (change?.title === undefined) continue
-          if (urlAge < rule.minUrlAge) continue
-          if (tab.status === 'loading') continue
-        }
-        if (rule.minInactAge !== undefined) {
-          if (inactAge === undefined) continue
-          if (inactAge < rule.minInactAge) continue
+          if (idleTime === undefined) continue
+          if (idleTime < rule.minIdleTime) continue
         }
         tab.reactive.badge = tab.badge = badgeValue
         tab.reactive.badgeBg = rule.bg ?? null
@@ -243,20 +232,12 @@ export function parseBadgeRegexpRule(rule: string): BadgeRule {
   const urgent = URGENT_RE.test(rule)
   const notify = NOTIFY_RE.test(rule)
   const staticValue = VALUE_RE.exec(rule)?.groups?.v
-  const minUrlAgeStr = MIN_URL_AGE_RE.exec(rule)?.groups?.age
-  const minUrlAge = minUrlAgeStr ? parseInt(minUrlAgeStr) : undefined
-  const minInactAgeStr = MIN_INACT_AGE_RE.exec(rule)?.groups?.age
-  const minInactAge = minInactAgeStr ? parseInt(minInactAgeStr) : undefined
+  const minIdleTimeStr = MIN_IDLE_TIME_RE.exec(rule)?.groups?.time
+  const minIdleTime = minIdleTimeStr ? parseInt(minIdleTimeStr) : undefined
   const excludePinned = !pinned && normal
   const excludeNormal = !normal && pinned
 
-  if (!urlAgeCalcNeeded) {
-    urlAgeCalcNeeded = minUrlAge !== undefined && !isNaN(minUrlAge)
-  }
-  if (!inactAgeCalcNeeded) {
-    inactAgeCalcNeeded = minInactAge !== undefined && !isNaN(minInactAge)
-  }
-  timestampNeeded = urlAgeCalcNeeded || inactAgeCalcNeeded
+  if (!idleCalcNeeded) idleCalcNeeded = minIdleTime !== undefined && !isNaN(minIdleTime)
 
   return {
     src: rule,
@@ -272,8 +253,7 @@ export function parseBadgeRegexpRule(rule: string): BadgeRule {
     excludePinned,
     excludeNormal,
     staticValue: staticValue === '.' ? ' ' : staticValue,
-    minUrlAge: minUrlAge && !isNaN(minUrlAge) ? minUrlAge : undefined,
-    minInactAge: minInactAge && !isNaN(minInactAge) ? minInactAge : undefined,
+    minIdleTime: minIdleTime && !isNaN(minIdleTime) ? minIdleTime : undefined,
     bg,
     fg,
   }

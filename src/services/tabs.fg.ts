@@ -234,8 +234,7 @@ export async function load(src?: LoadSrc): Promise<void> {
     if (t.folded && t.invisible) Tabs.recalcBranchLen(t.id)
 
     // Set default timestamps
-    t.urlUpdated = dts
-    t.inactivated = dts
+    t.lastActivity = dts
   })
 
   for (const panel of Sidebar.panels) {

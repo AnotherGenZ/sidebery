@@ -107,7 +107,7 @@ export class MTab implements Tab {
   splitViewId?: number | undefined
   badge: boolean = false
   badgeUrgent: boolean = false
-  urlUpdated?: number | undefined
+  lastActivity?: number | undefined
   urgentTabIds?: Set<ID> | undefined
 
   constructor(ptab?: Partial<Tab>) {

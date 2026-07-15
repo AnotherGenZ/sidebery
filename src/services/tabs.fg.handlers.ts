@@ -765,6 +765,7 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
   }
 
   // Logs.info('Tabs.onTabUpdated:', tabId, Object.keys(change))
+  let ts
 
   // Discarded
   if (change.discarded !== undefined) {
@@ -815,7 +816,14 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
 
   // Status change
   if (change.status !== undefined) {
-    if (change.status === 'complete' && nativeTab.url[0] !== 'a') {
+    const complete = change.status === 'complete'
+    if (complete && !tab.active) {
+      if (ts === undefined) ts = Date.now()
+      tab.lastActivity = ts
+    } else {
+      tab.lastActivity = undefined
+    }
+    if (complete && nativeTab.url[0] !== 'a') {
       if (Settings.state.animations && change.status !== tab.status) {
         Tabs.triggerFlashAnimation(tab)
       }
@@ -904,7 +912,10 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
     }
 
     // Set url update timestamp
-    if (!tab.internal) tab.urlUpdated = Date.now()
+    if (!tab.internal) {
+      if (ts === undefined) ts = Date.now()
+      tab.lastActivity = ts
+    }
   }
 
   // Handle Firefox internal favicon
@@ -1692,7 +1703,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   if (prevActive) {
     prevActive.reactive.active = prevActive.active = false
     Tabs.writeActiveTabsHistory(prevActive, tab)
-    prevActive.inactivated = ts
+    prevActive.lastActivity = ts
 
     // Hide previously active tab if needed
     const hideFolded = Settings.state.hideFoldedTabs
@@ -1711,6 +1722,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
     tab.reactive.unread = tab.unread = false
   }
   tab.lastAccessed = ts
+  tab.lastActivity = undefined
   Tabs.setActiveId(info.tabId)
 
   const panel = Sidebar.panelsById[tab.panelId]

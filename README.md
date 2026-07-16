@@ -29,14 +29,13 @@ Firefox extension for managing tabs and bookmarks in sidebar.
 
 ## Install
 
-**Stable** (v5.5.2):
-[Release page](https://github.com/mbnuqw/sidebery/releases/tag/v5.5.2) |
-[Addon page](https://addons.mozilla.org/firefox/addon/sidebery/) |
-[Install](https://addons.mozilla.org/firefox/downloads/file/4766841/sidebery-5.5.2.xpi) (reviewed by Mozilla)  
+**Stable**:
+[Release page](https://github.com/mbnuqw/sidebery/releases/latest) |
+[Addon page](https://addons.mozilla.org/firefox/addon/sidebery/) (reviewed by Mozilla)  
 **Nightly** (v5.5.2.8):
 [Install](https://github.com/mbnuqw/sidebery/releases/download/v5.5.2/sidebery-5.5.2.8.xpi)
 > [!NOTE]
-> Nightly release is a signed build created via [github actions](https://github.com/mbnuqw/sidebery/actions/workflows/nightly-release.yml). It supports an auto-updates and is designed for testing new features. A few previous nightly releases can be found in the Assets section of the latest [release notes](https://github.com/mbnuqw/sidebery/releases).
+> Nightly release is a signed build created via [github actions](https://github.com/mbnuqw/sidebery/actions/workflows/nightly-release.yml). It supports auto-updates and is designed for testing new features. A few previous nightly releases can be found in the Assets section of the latest [release notes](https://github.com/mbnuqw/sidebery/releases).
 >
 > If you're manually updating an already installed Sidebery version you also need to open the Add-ons Manager (about:addon) and click on the 'Update Now' button in the Sidebery card or restart the browser.
 

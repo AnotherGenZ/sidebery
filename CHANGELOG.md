@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Tabs: Broken initialization in Firefox versions prior to v149 (resolves [#2430](https://github.com/mbnuqw/sidebery/issues/2430))
+
 ---
 
 ## v5.6.0 - 2026.07.16

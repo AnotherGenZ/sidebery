@@ -78,7 +78,13 @@ async function main(): Promise<void> {
     updWindowPreface: Windows.updWindowPreface,
   })
 
-  await Promise.all([Windows.load(), Settings.load(), Permissions.load(), Info.loadVersionInfo()])
+  await Promise.all([
+    Windows.load(),
+    Settings.load(),
+    Permissions.load(),
+    Info.loadVersionInfo(),
+    Info.loadBrowserInfo(),
+  ])
 
   IPC.setWinId(Windows.id)
   Logs.setWinId(Windows.id)

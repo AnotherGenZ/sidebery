@@ -18,6 +18,7 @@ import * as Containers from 'src/services/containers'
 import * as Mouse from 'src/services/mouse.fg'
 import * as Popups from 'src/services/popups.fg'
 import * as Links from 'src/services/links'
+import * as Info from 'src/services/info.fg'
 
 const EXT_HOST = browser.runtime.getURL('').slice(16)
 const URL_HOST_PATH_RE = /^([a-z0-9-]{1,63}\.)+\w+(:\d+)?\/[A-Za-z0-9-._~:/?#[\]%@!$&'()*+,;=]*$/
@@ -27,14 +28,17 @@ export let listenersAreSet = false
 export function setupTabsListeners(): void {
   if (!Sidebar.hasTabs) return
 
+  // prettier-ignore
+  const updProps: browser.tabs.UpdateProp[] = [
+    'audible', 'discarded', 'favIconUrl', 'splitViewId', 'hidden',
+    'mutedInfo', 'pinned', 'status', 'title', 'url',
+  ]
+  if (Info.ffVersionLowerThan('149')) {
+    Utils.rmFromArray(updProps, 'splitViewId')
+  }
+
   browser.tabs.onCreated.addListener(onTabCreated)
-  browser.tabs.onUpdated.addListener(onTabUpdated, {
-    // prettier-ignore
-    properties: [
-      'audible', 'discarded', 'favIconUrl', 'splitViewId', 'hidden',
-      'mutedInfo', 'pinned', 'status', 'title', 'url',
-    ],
-  })
+  browser.tabs.onUpdated.addListener(onTabUpdated, { properties: updProps })
   browser.tabs.onRemoved.addListener(onTabRemoved)
   browser.tabs.onMoved.addListener(onTabMoved)
   browser.tabs.onDetached.addListener(onTabDetached)

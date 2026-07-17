@@ -9,7 +9,9 @@ async function main() {
   // Parse arguments
   const versionRE = /^\d\d?\.\d\d?\.\d\d?\.?\d?\d?\d?$/
   const version = process.argv[process.argv.length - 1]
-  const is4Digit = version.split('.').length === 4
+  const versionParts = version.split('.')
+  const isStable = versionParts.length === 3
+  const isNightly = versionParts.length === 4
   const vite = process.argv.includes('vite')
   const keepNames = process.argv.includes('keep-names')
   const bundleVue = process.argv.includes('bundle-vue')
@@ -49,11 +51,11 @@ async function main() {
     return
   }
   try {
-    console.log(`Updating version${is4Digit ? ' and update_url' : ''} in manifest.json...`)
+    console.log(`Updating version${isNightly ? ' and update_url' : ''} in manifest.json...`)
     let manifestContent = await fs.readFile('./src/manifest.json', { encoding: 'utf-8' })
     const manifest = JSON.parse(manifestContent)
     manifest.version = version
-    if (is4Digit) manifest.browser_specific_settings.gecko.update_url = UPDATE_URL
+    if (isNightly) manifest.browser_specific_settings.gecko.update_url = UPDATE_URL
     manifestContent = JSON.stringify(manifest, undefined, '  ') + '\n'
     await fs.writeFile('./src/manifest.json', manifestContent, { encoding: 'utf-8' })
   } catch {
@@ -76,8 +78,20 @@ async function main() {
     execSync(`node ./build/all${v}.js${kn}${bv}`, { encoding: 'utf-8', stdio: 'inherit' })
     buildIsOk = true
   } catch (err) {
-    console.log('\n Cannot build addon')
+    console.log('\nCannot build addon')
     console.log(err)
+  }
+
+  // Lint addon
+  if (buildIsOk && isStable) {
+    console.log('Linting addon...')
+    try {
+      execSync(`npx web-ext lint --source-dir ./addon`, { encoding: 'utf-8', stdio: 'inherit' })
+    } catch (err) {
+      console.log('\nCannot lint addon')
+      console.log(err)
+      buildIsOk = false
+    }
   }
 
   // Revert version in package.json, package-lock.json and manifest.json
@@ -107,13 +121,13 @@ async function main() {
       return
     }
   }
-  if (revertVersion || is4Digit) {
+  if (revertVersion || isNightly) {
     try {
       console.log('Reverting data in manifest.json...')
       let manifestContent = await fs.readFile('./src/manifest.json', { encoding: 'utf-8' })
       const manifest = JSON.parse(manifestContent)
       if (revertVersion) manifest.version = prevVersion
-      if (is4Digit) delete manifest.browser_specific_settings.gecko.update_url
+      if (isNightly) delete manifest.browser_specific_settings.gecko.update_url
       manifestContent = JSON.stringify(manifest, undefined, '  ') + '\n'
       await fs.writeFile('./src/manifest.json', manifestContent, { encoding: 'utf-8' })
     } catch {
@@ -133,7 +147,7 @@ async function main() {
   })
 
   // Sign
-  if (is4Digit && sign) {
+  if (isNightly && sign) {
     console.log('Signing addon...')
 
     if (!process.env.WEB_EXT_API_KEY || !process.env.WEB_EXT_API_SECRET) {

@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 
 import fs from 'fs/promises'
+import path from 'path'
 import { execSync } from 'child_process'
 
 const UPDATE_URL = 'https://raw.githubusercontent.com/mbnuqw/sidebery/v5/updates.json'
@@ -146,6 +147,37 @@ async function main() {
     stdio: 'inherit',
   })
 
+  // Print file sizes
+  console.log('Recent build sizes:')
+  try {
+    const verRe = /(\d+\.\d+\.\d+(?:\.\d*)?)/
+    const buildRe = /^sidebery-.+\.zip$/
+    const safeParseInt = s => {
+      const n = parseInt(s)
+      return isNaN(n) || !n ? 0 : n
+    }
+    const files = await fs.readdir('./dist', { withFileTypes: true })
+    const buildFiles = files.filter(f => f.isFile() && buildRe.test(f.name))
+    const recentBuildFiles = buildFiles
+      .sort((a, b) => {
+        const av = (verRe.exec(a.name)?.[0] ?? '0').split('.').map(safeParseInt)
+        const bv = (verRe.exec(b.name)?.[0] ?? '0').split('.').map(safeParseInt)
+        if (av[0] !== bv[0]) return bv[0] - av[0]
+        if (av[1] !== bv[1]) return (bv[1] ?? 0) - (av[1] ?? 0)
+        if (av[2] !== bv[2]) return (bv[2] ?? 0) - (av[2] ?? 0)
+        if (av[3] !== bv[3]) return (bv[3] ?? 0) - (av[3] ?? 0)
+      })
+      .slice(0, 10)
+    for (const file of recentBuildFiles) {
+      const stats = await fs.stat(path.join(file.parentPath, file.name))
+      const currentCursor = file.name.includes(version) ? '> ' : '  '
+      console.log(`${currentCursor}${file.name}: ${sizeToString(stats.size)}`)
+    }
+  } catch (err) {
+    console.log('\nUnable to list file sizes')
+    console.log(err)
+  }
+
   // Sign
   if (isNightly && sign) {
     console.log('Signing addon...')
@@ -169,3 +201,22 @@ process.on('SIGINT', async () => {
 })
 
 await main()
+
+function sizeToString(bytes) {
+  if (bytes < 1000) return `${bytes} b`
+
+  const kb = bytes / 1024
+  if (kb < 10) return `${Math.round(kb * 100) / 100} kb`
+  if (kb < 100) return `${Math.round(kb * 10) / 10} kb`
+  if (kb < 1000) return `${Math.round(kb)} kb`
+
+  const mb = bytes / 1048576
+  if (mb < 10) return `${Math.round(mb * 100) / 100} mb`
+  if (mb < 100) return `${Math.round(mb * 10) / 10} mb`
+  if (mb < 1000) return `${Math.round(mb)} mb`
+
+  const gb = bytes / 1073741824
+  if (gb < 10) return `${Math.round(gb * 100) / 100} gb`
+  if (gb < 100) return `${Math.round(gb * 10) / 10} gb`
+  return `${Math.round(gb)} gb`
+}

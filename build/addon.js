@@ -13,9 +13,6 @@ async function main() {
   const versionParts = version.split('.')
   const isStable = versionParts.length === 3
   const isNightly = versionParts.length === 4
-  const vite = process.argv.includes('vite')
-  const keepNames = process.argv.includes('keep-names')
-  const bundleVue = process.argv.includes('bundle-vue')
   const preserveVersion = process.argv.some(arg => arg === '--preserve')
   const sign = process.argv.some(arg => arg === '--sign')
   if (!versionRE.test(version)) {
@@ -73,10 +70,7 @@ async function main() {
   console.log('Preparing code...')
   let buildIsOk = false
   try {
-    const v = vite ? '.vite' : ''
-    const kn = keepNames ? ' --keep-names' : ''
-    const bv = bundleVue ? ' --bundle-vue' : ''
-    execSync(`node ./build/all${v}.js${kn}${bv}`, { encoding: 'utf-8', stdio: 'inherit' })
+    execSync(`node ./build/all.vite.js`, { encoding: 'utf-8', stdio: 'inherit' })
     buildIsOk = true
   } catch (err) {
     console.log('\nCannot build addon')

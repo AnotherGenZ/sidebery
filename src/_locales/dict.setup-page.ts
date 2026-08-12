@@ -3627,15 +3627,16 @@ Available parameters:
     en: 'Sticky active tab',
   },
   'settings.sticky_ancestor_tabs': {
-    en: 'Sticky ancestor tabs',
-    de: 'Fixierte übergeordnete Tabs',
-    fr: 'Onglets ancêtres fixes',
-    hu: 'Rögzített felmenő lapok',
-    pl: 'Przypięte karty nadrzędne',
+    en: 'Sticky ancestor tabs of the active tab',
+    // TODO: Updated, translation is needed
+    // de: 'Fixierte übergeordnete Tabs',
+    // fr: 'Onglets ancêtres fixes',
+    // hu: 'Rögzített felmenő lapok',
+    // pl: 'Przypięte karty nadrzędne',
     // ru: 'Закреплённые вкладки-предки', // TODO: Закреплённые already used for pinned
-    zh_CN: '固定祖先标签页',
-    zh_TW: '固定祖先分頁',
-    ja: '先祖タブを固定表示',
+    // zh_CN: '固定祖先标签页',
+    // zh_TW: '固定祖先分頁',
+    // ja: '先祖タブを固定表示',
   },
   'settings.sticky_ancestor_tabs_limit': {
     en: 'Depth limit',

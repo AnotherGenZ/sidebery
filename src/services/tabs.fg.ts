@@ -1847,6 +1847,14 @@ export function foldAllInactiveBranches(tabs: T.Tab[] = []): void {
   }
 }
 
+export function expAllBranches(tabs: T.Tab[] = []): void {
+  for (const tab of tabs) {
+    if (tab.isParent && tab.folded) {
+      expTabsBranch(tab.id, true, true)
+    }
+  }
+}
+
 export function activateParent(tabId?: ID): void {
   if (!Settings.state.tabsTree) return
   if (tabId === undefined) tabId = Tabs.activeId

@@ -2000,6 +2000,17 @@ Vous pouvez également définir des préfixes pour chaque type de commande pour 
     zh_TW: '折疊全部',
     ja: 'すべて折りたたむ',
   },
+  'settings.nav_bar_btn_expand': {
+    en: 'Expand all',
+    de: 'Alle ausklappen',
+    fr: 'Tout déplier',
+    hu: 'Ágak megnyitása',
+    pl: 'Rozwiń wszystko',
+    ru: 'Развернуть все',
+    zh_CN: '展开全部',
+    zh_TW: '展開全部',
+    ja: 'すべて展開する',
+  },
   'settings.nav_bar_btn_remute_audio_tabs': {
     en: 'Mute/Unmute audible tabs',
     de: 'Stumm-/Lautschalten hörbarer Tabs',

@@ -224,11 +224,43 @@ export function dateTimeTemplate(str: string, msOrDate: number | Date): string {
 }
 
 /**
- * Get domain of the url
+ * Get hostname of the url
  */
-export function getDomainOf(url: string): string {
+export function getHostname(url: string): string {
   if (!url) return url
-  return D.DOMAIN_RE.exec(url)?.[1] ?? url
+  return D.HOSTNAME_RE.exec(url)?.[1] ?? url
+}
+
+/**
+ * Get domain of the hostname
+ */
+export function getDomain(hostname: string, withPubSuffix: boolean, depth: number): string {
+  if (!withPubSuffix && depth === 0) return ''
+  if (withPubSuffix && depth === -1) return hostname
+  if (withPubSuffix && depth === 1) {
+    try {
+      const result = browser.publicSuffix?.getDomain(hostname)
+      if (result) return result
+    } catch {
+      // noop
+    }
+  }
+  let pubSuffix
+  try {
+    pubSuffix = browser.publicSuffix?.getKnownSuffix(hostname) ?? undefined
+  } catch {
+    // noop
+  }
+  let s = pubSuffix ? hostname.length - pubSuffix.length - 1 : hostname.lastIndexOf('.')
+  let e = withPubSuffix ? hostname.length : s
+  if (e < 0) e = 0
+  if (depth < 0) depth = 127
+  while (s > 0 && depth-- > 0) {
+    s = hostname.lastIndexOf('.', s - 1)
+  }
+  if (s < -1) s = -1
+  else if (s > e) s = e - 1
+  return hostname.slice(s + 1, e)
 }
 
 export function sameStart(a: string, b: string, limit: number) {

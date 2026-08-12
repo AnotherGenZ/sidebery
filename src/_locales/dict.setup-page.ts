@@ -3623,6 +3623,67 @@ Available parameters:
     zh_TW: '無',
     ja: 'なし',
   },
+  'settings.sticky_active_tab': {
+    en: 'Sticky active tab',
+  },
+  'settings.sticky_ancestor_tabs': {
+    en: 'Sticky ancestor tabs',
+    de: 'Fixierte übergeordnete Tabs',
+    fr: 'Onglets ancêtres fixes',
+    hu: 'Rögzített felmenő lapok',
+    pl: 'Przypięte karty nadrzędne',
+    // ru: 'Закреплённые вкладки-предки', // TODO: Закреплённые already used for pinned
+    zh_CN: '固定祖先标签页',
+    zh_TW: '固定祖先分頁',
+    ja: '先祖タブを固定表示',
+  },
+  'settings.sticky_ancestor_tabs_limit': {
+    en: 'Depth limit',
+    // TODO: Updated, need translation
+    // de: 'Maximale Tiefe der fixierten übergeordneten Tabs',
+    // fr: 'Limite de profondeur des onglets ancêtres fixes',
+    // hu: 'A rögzített felmenő lapok mélységkorlátja',
+    // pl: 'Limit głębokości przypiętych kart nadrzędnych',
+    // ru: 'Максимальная глубина закреплённых вкладок-предков',
+    // zh_CN: '固定祖先标签页深度上限',
+    // zh_TW: '固定祖先分頁深度上限',
+    // ja: '固定する先祖タブの深さ制限',
+  },
+  'settings.sticky_ancestor_tabs_limit_1': {
+    en: '1',
+  },
+  'settings.sticky_ancestor_tabs_limit_2': {
+    en: '2',
+  },
+  'settings.sticky_ancestor_tabs_limit_3': {
+    en: '3',
+  },
+  'settings.sticky_ancestor_tabs_limit_4': {
+    en: '4',
+  },
+  'settings.sticky_ancestor_tabs_limit_5': {
+    en: '5',
+  },
+  'settings.sticky_ancestor_tabs_limit_none': {
+    en: 'none',
+    de: 'Unbegrenzt',
+    fr: 'aucun',
+    hu: 'nincs',
+    pl: 'brak',
+    ru: 'выкл',
+    zh_CN: '无',
+    zh_TW: '無',
+    ja: 'なし',
+  },
+  'settings.sticky_ancestor_tabs_layout': {
+    en: 'Layout',
+  },
+  'settings.sticky_ancestor_tabs_layout_col': {
+    en: 'vertical',
+  },
+  'settings.sticky_ancestor_tabs_layout_row': {
+    en: 'horizontal',
+  },
   'settings.auto_fold_tabs': {
     en: 'Auto fold tabs branch on expanding another branch',
     de: 'Zweig beim Öffnen eines anderen Zweiges automatisch einklappen',

@@ -1,6 +1,7 @@
 <template lang="pug">
 .Tab(
-  :id="'tab' + tab.id"
+  ref="tabEl"
+  :id="(sticky ? 'stickytab' : 'tab') + tab.id"
   :data-pin="!!iconOnly"
   :data-active="tab.reactive.active"
   :data-loading="tab.reactive.status === TabStatus.Loading"
@@ -83,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, useTemplateRef } from 'vue'
 import type { DragInfo, DragItem, Tab } from 'src/types'
 import { TabStatus, DragType, DropType, MenuType } from 'src/enums'
 import * as Settings from 'src/services/settings'
@@ -100,7 +101,7 @@ import * as Utils from 'src/utils'
 import * as Logs from 'src/services/logs'
 import * as Preview from 'src/services/tabs.fg.preview'
 
-const props = defineProps<{ tabId: ID }>()
+const props = defineProps<{ tabId: ID; sticky?: boolean }>()
 const tab = Tabs.byId[props.tabId] as Tab
 const iconOnly =
   tab.pinned &&
@@ -108,6 +109,7 @@ const iconOnly =
     Settings.state.pinnedTabsPosition === 'left' ||
     Settings.state.pinnedTabsPosition === 'right')
 
+const tabEl = useTemplateRef('tabEl')
 const titleEl = ref<HTMLElement | null>(null)
 const favImgEl = ref<HTMLImageElement | null>(null)
 const favSvgUseEl = ref<SVGElement | null>(null)
@@ -129,6 +131,14 @@ const tabColor = computed<string>(() => {
 })
 
 onMounted(() => {
+  // Sticky clones are a second view of the same tab. They must not overwrite the
+  // shared element refs on the tab object (those drive the real row's favicon/title/
+  // flash updates), so render the favicon into the clone's own elements instead.
+  if (props.sticky) {
+    Tabs.renderFaviconInto(tab, favImgEl.value ?? undefined, favSvgUseEl.value ?? undefined)
+    return
+  }
+
   if (titleEl.value) tab.titleEl = titleEl.value
   if (favImgEl.value) tab.favImgEl = favImgEl.value
   if (favSvgUseEl.value) tab.favSvgUseEl = favSvgUseEl.value
@@ -137,6 +147,7 @@ onMounted(() => {
   if (tab.url !== 'about:blank') {
     Tabs.renderFavicon(tab)
   }
+  if (!props.sticky) tab.el = tabEl.value ?? undefined
 })
 
 function shouldBeConvertedToGroup(): boolean {
@@ -615,7 +626,7 @@ function onMouseEnter(e: MouseEvent) {
   }
 
   if (Settings.state.previewTabs) {
-    Preview.setTargetTab(tab.id)
+    Preview.setTargetTab(tab.id, props.sticky)
   } else if (!Settings.state.forceUpdTooltip) {
     updateTooltipDebounced()
   }
@@ -739,6 +750,12 @@ function onExpandMouseUp(e: MouseEvent): void {
 }
 
 function onError(): void {
+  // For a sticky clone, fall back to the placeholder locally without mutating the
+  // shared tab (which would affect the real row).
+  if (props.sticky) {
+    Tabs.renderFaviconInto(tab, undefined, favSvgUseEl.value ?? undefined)
+    return
+  }
   tab.favIconUrl = undefined
   Tabs.renderFavicon(tab)
 }

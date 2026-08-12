@@ -1732,6 +1732,15 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   const panel = Sidebar.panelsById[tab.panelId]
   if (!Utils.isTabsPanel(panel)) return
 
+  // Update sticky tabs
+  if (Settings.stickyTabs) {
+    Tabs.calcStickyTabs(panel)
+    if (prevActive && prevActive.panelId !== panel.id) {
+      const prevPanel = Sidebar.panelsById[prevActive.panelId]
+      if (Utils.isTabsPanel(prevPanel)) Tabs.calcStickyTabs(prevPanel)
+    }
+  }
+
   // Update succession
   Tabs.updateSuccessionDebounced(0)
 

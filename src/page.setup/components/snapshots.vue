@@ -149,7 +149,7 @@ void (async function init(): Promise<void> {
 
   if (stored.snapshots.length > 0) {
     // Normalize snapshots
-    for (let i = stored.snapshots.length; i--; ) {
+    for (let i = stored.snapshots.length; i--;) {
       const snapshot = Snapshots.parseSnapshot(stored.snapshots, i, dayStartMs)
       if (snapshot) snapshots.push(snapshot)
     }
@@ -173,7 +173,7 @@ function updateSnapshots(newSnapshots: T.Snapshot[]) {
   const snapshots = []
 
   // Normalize snapshots
-  for (let i = newSnapshots.length; i--; ) {
+  for (let i = newSnapshots.length; i--;) {
     let snapshot = Snapshots.parseSnapshot(newSnapshots, i, dayStartMs)
     if (snapshot) snapshots.push(snapshot)
   }

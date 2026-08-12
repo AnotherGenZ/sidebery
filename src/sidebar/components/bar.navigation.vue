@@ -239,7 +239,7 @@ const nav = computed<Nav | undefined>(() => {
     let max = inlineMax - visLen
     if (hasHiddenPanels) max--
     if (max < MIN_INLINE_STATIC_BTNS_LEN) max = MIN_INLINE_STATIC_BTNS_LEN
-    for (let i = ids.length; i--; ) {
+    for (let i = ids.length; i--;) {
       const id = ids[i]
 
       if (

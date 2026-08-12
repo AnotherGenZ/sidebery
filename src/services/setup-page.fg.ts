@@ -10,12 +10,7 @@ import * as Logs from 'src/services/logs'
 import * as SidebarConf from 'src/services/sidebar-config'
 
 export type SetupPageView =
-  | 'settings'
-  | 'menu_editor'
-  | 'styles_editor'
-  | 'snapshots'
-  | 'storage'
-  | 'keybindings'
+  'settings' | 'menu_editor' | 'styles_editor' | 'snapshots' | 'storage' | 'keybindings'
 
 export interface SetupPageNavOption {
   active: boolean
@@ -309,7 +304,7 @@ export function registerEl(name: string, el: HTMLElement | null): void {
 
 export function updateActiveSection(scrollTop: number): void {
   const actView = SetupPage.reactive.activeView
-  for (let opt, el, i = SetupPage.reactive.nav.length; i--; ) {
+  for (let opt, el, i = SetupPage.reactive.nav.length; i--;) {
     opt = SetupPage.reactive.nav[i]
     if (!opt) continue
 

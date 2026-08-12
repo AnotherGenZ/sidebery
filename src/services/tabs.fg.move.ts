@@ -618,7 +618,7 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
   const toSave: ID[] = []
   let updMediaBadges = false
 
-  for (let i = tabIds.length; i--; ) {
+  for (let i = tabIds.length; i--;) {
     const id = tabIds[i]
     const tab = Tabs.byId[id]
     if (!tab) continue

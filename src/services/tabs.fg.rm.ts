@@ -64,7 +64,7 @@ export function removeTabsAbove(tabIds?: ID[]): void {
   if (!startTab || startTab.pinned) return
 
   const toRm = []
-  for (let i = startTab.index; i--; ) {
+  for (let i = startTab.index; i--;) {
     const tab = Tabs.list[i]
     if (!tab || tab.pinned || tab.panelId !== startTab.panelId) break
     toRm.push(tab.id)

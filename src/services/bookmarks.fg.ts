@@ -314,7 +314,7 @@ class ancestorsUpdBuffer {
 
     clearTimeout(this.#timeout)
     this.#timeout = setTimeout(() => {
-      for (let i = this.#byTreeLvl.length; i--; ) {
+      for (let i = this.#byTreeLvl.length; i--;) {
         const foldersOfLvl = this.#byTreeLvl[i]
         if (!foldersOfLvl || !foldersOfLvl.size) continue
 

@@ -236,7 +236,7 @@ async function sortTabsInChunks(sortingGroups: ID[][], sortFn: (a: ID, b: ID) =>
     }
 
     // Cut tabs from local list (reversely)
-    for (let i = toCut.length; i--; ) {
+    for (let i = toCut.length; i--;) {
       const tab = toCut[i]
       if (!tab) continue
 

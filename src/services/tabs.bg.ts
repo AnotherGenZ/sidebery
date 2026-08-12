@@ -450,7 +450,7 @@ function onTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
   tabWindow.tabs.splice(info.fromIndex, 1)
   tabWindow.tabs.splice(info.toIndex, 0, tabAtSrcIndex)
 
-  for (let i = tabWindow.tabs.length, t; i--; ) {
+  for (let i = tabWindow.tabs.length, t; i--;) {
     t = tabWindow.tabs[i]
     if (t) t.index = i
   }

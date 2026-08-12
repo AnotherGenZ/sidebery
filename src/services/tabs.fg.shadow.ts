@@ -132,7 +132,7 @@ function onShadowTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
   const movedTab = shadowList.splice(info.fromIndex, 1)[0]
   shadowList.splice(info.toIndex, 0, movedTab)
 
-  for (let i = shadowList.length; i--; ) {
+  for (let i = shadowList.length; i--;) {
     shadowList[i].index = i
   }
 }

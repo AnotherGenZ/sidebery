@@ -1172,14 +1172,7 @@ declare namespace browser {
     }
 
     type DangerType =
-      | 'file'
-      | 'url'
-      | 'content'
-      | 'uncommon'
-      | 'host'
-      | 'unwanted'
-      | 'safe'
-      | 'accepted'
+      'file' | 'url' | 'content' | 'uncommon' | 'host' | 'unwanted' | 'safe' | 'accepted'
 
     type InterruptReason =
       // File-related errors:

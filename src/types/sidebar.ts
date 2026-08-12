@@ -231,10 +231,7 @@ export interface ViewModeBtn {
 }
 
 export type PanelConfig =
-  | BookmarksPanelConfig
-  | TabsPanelConfig
-  | HistoryPanelConfig
-  | SyncPanelConfig
+  BookmarksPanelConfig | TabsPanelConfig | HistoryPanelConfig | SyncPanelConfig
 export type Panel = BookmarksPanel | TabsPanel | HistoryPanel | SyncPanel
 
 export interface TabToPanelMoveRuleConfig {

@@ -1032,7 +1032,7 @@ function onKeyTabsIndent(): void {
     if (!tab) continue
 
     let parentTab
-    for (let t, i = tab.index; i--; ) {
+    for (let t, i = tab.index; i--;) {
       t = Tabs.list[i]
       if (!t || t.panelId !== tab.panelId) continue
       if (t.lvl < tab.lvl) break
@@ -1101,7 +1101,7 @@ function onKeyTabsOutdent(): void {
     if (tab.parentId === -1) continue
 
     let parentTab
-    for (let t, i = tab.index; i--; ) {
+    for (let t, i = tab.index; i--;) {
       t = Tabs.list[i]
       if (!t) continue
       if (t.lvl < tab.lvl) {

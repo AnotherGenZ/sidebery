@@ -433,7 +433,7 @@ function comment(e: KeyboardEvent): void {
 function findPrevLineBreak(text: string, index: number): number {
   if (index <= 0) return 0
 
-  for (let i = index; i--; ) {
+  for (let i = index; i--;) {
     const char = text[i]
     if (char === '\n' || char === '\r') return i + 1
   }

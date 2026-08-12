@@ -90,7 +90,7 @@ export function onBookmarksSearch(activePanel: Panel, panel?: Panel): void {
     if (!bookmarks) {
       if (panel.reactive.rootOffset) {
         let folder = Bookmarks.byId.get(panel.rootId)
-        for (let i = panel.reactive.rootOffset; i-- && folder; ) {
+        for (let i = panel.reactive.rootOffset; i-- && folder;) {
           folder = Bookmarks.byId.get(folder.parentId)
         }
         if (folder) bookmarks = folder.children

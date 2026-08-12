@@ -154,7 +154,7 @@ function init() {
   } else {
     const rePrefix = '/^https?://([0-9A-Za-z-]{1,63}\\.)*'
     const len = urlInfo.hostParts.length - 1
-    for (let i = len; i-- > 0; ) {
+    for (let i = len; i-- > 0;) {
       const hostParts = urlInfo.hostParts.slice(i)
       const host = hostParts.join('.')
       const reHost = hostParts.join('\\.') + '/'

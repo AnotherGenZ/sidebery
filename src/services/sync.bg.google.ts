@@ -611,7 +611,7 @@ async function _saveTabs(
     let splitIndex = 0
     const splitThreshold = TABS_PER_FILE_LIMIT / 2
     const batchLen = recentFileData.batches.length
-    for (let i = batchLen; i-- > 0; ) {
+    for (let i = batchLen; i-- > 0;) {
       const sTabsBatch = recentFileData.batches[i]
       tabCount += sTabsBatch.tabs.length
 

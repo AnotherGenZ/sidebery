@@ -16,7 +16,7 @@ export function getNormalizedSnapshot(
 
   // Containers
   if (snapshot.containers === SnapStoreMode.Unchanged) {
-    for (let i = index; i--; ) {
+    for (let i = index; i--;) {
       const snapN = snapshots[i]
       if (snapN && snapN.containers !== SnapStoreMode.Unchanged) {
         snapshot.containers = snapN.containers
@@ -27,7 +27,7 @@ export function getNormalizedSnapshot(
 
   // Nav and panels
   if (snapshot.sidebar === SnapStoreMode.Unchanged) {
-    for (let i = index; i--; ) {
+    for (let i = index; i--;) {
       const snapN = snapshots[i]
       if (snapN && snapN.sidebar !== SnapStoreMode.Unchanged) {
         snapshot.sidebar = snapN.sidebar
@@ -51,7 +51,7 @@ export function getNormalizedSnapshot(
         if (tab === SnapStoreMode.Unchanged) {
           if (index === 0) return
 
-          for (let i = index; i--; ) {
+          for (let i = index; i--;) {
             const snapN = snapshots[i]
             const tabN = snapN?.tabs[wi]?.[pi]?.[ti]
             if (tabN && tabN !== SnapStoreMode.Unchanged) {
@@ -179,7 +179,7 @@ export function minimizeSnapshot(snapshots: Snapshot[], snapshot: Snapshot): voi
   const newSidebarJSON = JSON.stringify(snapshot.sidebar)
 
   // Containers
-  for (let i = snapshots.length; i--; ) {
+  for (let i = snapshots.length; i--;) {
     const snapN = snapshots[i]
     if (!snapN || !snapN.containers) break
 
@@ -194,7 +194,7 @@ export function minimizeSnapshot(snapshots: Snapshot[], snapshot: Snapshot): voi
   }
 
   // Nav and panels
-  for (let i = snapshots.length; i--; ) {
+  for (let i = snapshots.length; i--;) {
     const snapN = snapshots[i]
     if (!snapN || !snapN.sidebar) break
 
@@ -226,7 +226,7 @@ export function minimizeSnapshot(snapshots: Snapshot[], snapshot: Snapshot): voi
         if (tab === SnapStoreMode.Unchanged) continue
 
         // per snapshot (previous)
-        for (let i = snapshots.length; i--; ) {
+        for (let i = snapshots.length; i--;) {
           const snapN = snapshots[i]
           if (!snapN) break per_win // stop tabs minimizing
 

@@ -624,7 +624,7 @@ export function recalcBookmarksPanels(): void {
       if (panel.reactive.rootOffset > 0) {
         let folder = Bookmarks.byId.get(panel.rootId)
         if (folder) {
-          for (let i = panel.reactive.rootOffset; i-- && folder; ) {
+          for (let i = panel.reactive.rootOffset; i-- && folder;) {
             if (folder.parentId === D.BKM_ROOT_ID) {
               folder = undefined
               break

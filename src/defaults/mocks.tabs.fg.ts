@@ -109,6 +109,7 @@ export class MTab implements Tab {
   badgeUrgent: boolean = false
   lastActivity?: number | undefined
   urgentTabIds?: Set<ID> | undefined
+  el?: HTMLElement | undefined
 
   constructor(ptab?: Partial<Tab>) {
     if (ptab) {

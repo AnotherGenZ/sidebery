@@ -132,6 +132,7 @@ export function calcStickyTabs(panel: TabsPanel): void {
   while (tab && guard-- > 0 && bottomLen < limit) {
     if (
       tab.el &&
+      !tab.removing &&
       scrollBottom <
         tab.el.offsetTop +
           (stack ? (bottomOffset += tab.el.offsetHeight) : tab.el.offsetHeight) +
@@ -149,7 +150,7 @@ export function calcStickyTabs(panel: TabsPanel): void {
   topLimit = limit >= bottomLen ? limit - bottomLen : 0
   for (let i = stickyBranch.length; i-- > 0;) {
     tab = stickyBranch[i]
-    if (!tab.el) continue
+    if (!tab.el || tab.removing) continue
     if (scrollTop > tab.el.offsetTop - topOffset) {
       topLen++
       if (stack) {

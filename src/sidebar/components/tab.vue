@@ -455,10 +455,13 @@ function onMouseUp(e: MouseEvent): void {
       Settings.state.tabMiddleClick === 'close' &&
       sameTargetType
     ) {
-      if (!Selection.isSet()) select()
-      let selectedTabs = Selection.ids()
-      if (selectedTabs.length === 1 && preselectedTabs?.length) selectedTabs = preselectedTabs
-      Tabs.removeTabs(selectedTabs)
+      if (Selection.isSet()) {
+        let selectedTabs = Selection.ids()
+        if (selectedTabs.length === 1 && preselectedTabs?.length) selectedTabs = preselectedTabs
+        Tabs.removeTabs(selectedTabs)
+      } else {
+        Tabs.removeTabs([tab.id])
+      }
     }
   } else if (e.button === 2) {
     if (e.ctrlKey || e.shiftKey) return

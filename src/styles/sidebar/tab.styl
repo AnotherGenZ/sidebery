@@ -37,7 +37,7 @@
   --tabs-pinned-width: 32px
   --tabs-height: 32px
   --tabs-indent: 12px
-  --tabs-inner-gap: 5px
+  --tabs-inner-gap: 6px
   --tabs-close-btn-margin: 3px
 #root[data-frame-color-scheme="dark"]
   --tabs-progress-bg: #ffffff16
@@ -676,7 +676,7 @@
   aspect-ratio: 1 / 1
   z-index: 20
   opacity: 0
-  border-radius: calc(var(--tabs-border-radius) - 1px)
+  border-radius: calc(var(--tabs-border-radius) - var(--tabs-close-btn-margin))
   &:hover
     background-color: var(--frame-el-overlay-hover-bg)
   &:active

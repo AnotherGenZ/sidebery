@@ -105,7 +105,7 @@ let prevStickyTabsBottomLen = 0
 let prevStickyTabsActId = NOID
 
 export function calcStickyTabs(panel: TabsPanel): void {
-  if (!Settings.state.tabsTree || !Settings.stickyTabs || !panel.scrollEl) {
+  if (!panel.scrollEl) {
     return resetStickyTabs(panel)
   }
 
@@ -120,12 +120,11 @@ export function calcStickyTabs(panel: TabsPanel): void {
   const ntbbHeight = Settings.newTabBarPositionAfterTabs ? (panel.ntbbEl?.offsetHeight ?? 0) : 0
   const stack = Settings.stickyAncestorTabsLayoutCol
   const limit = Settings.stickyAncestorTabsLimit + (Settings.state.stickyActiveTab ? 1 : 0)
-  let topLimit = limit
   let topLen = 0
   let bottomLen = 0
   let top: ID[] | undefined
   let bottom: ID[] | undefined
-  let guard = Settings.state.stickyAncestorTabs ? 16 : 1
+  let guard = limit
   let topOffset = 0
   let bottomOffset = 0
   let tab = Settings.state.stickyActiveTab ? activeTab : Tabs.byId[activeTab.parentId]
@@ -147,7 +146,7 @@ export function calcStickyTabs(panel: TabsPanel): void {
     stickyBranch.push(tab)
     tab = Tabs.byId[tab.parentId]
   }
-  topLimit = limit >= bottomLen ? limit - bottomLen : 0
+  const topLimit = limit >= bottomLen ? limit - bottomLen : 0
   for (let i = stickyBranch.length; i-- > 0;) {
     tab = stickyBranch[i]
     if (!tab.el || tab.removing) continue
@@ -190,7 +189,7 @@ export function calcStickyTabs(panel: TabsPanel): void {
   prevStickyTabsActId = Tabs.activeId
 }
 
-function resetStickyTabs(panel: TabsPanel) {
+export function resetStickyTabs(panel: TabsPanel) {
   prevStickyTabsTopLen = 0
   if (panel.reactive.stickyTabIdsTop.length) {
     panel.reactive.stickyTabIdsTop.length = 0

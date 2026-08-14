@@ -188,6 +188,12 @@ section(ref="el")
     :default="DEFAULT_SETTINGS.tabSwitchDelay"
     :or="0"
     @update:value="Settings.saveDebounced(500)")
+  ToggleField(
+    label="settings.sticky_active_tab"
+    dbg="stickyActiveTab"
+    v-model:value="Settings.state.stickyActiveTab"
+    :default="DEFAULT_SETTINGS.stickyActiveTab"
+    @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="newTabPosEl")
     .sub-title: .text {{translate('settings.nav_settings_new_tab_position')}}
@@ -331,13 +337,6 @@ section(ref="el")
       :default="DEFAULT_SETTINGS.tabsTreeLimit"
       :inactive="!Settings.state.tabsTree"
       :opts="Settings.getOpts('tabsTreeLimit')"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.sticky_active_tab"
-      dbg="stickyActiveTab"
-      v-model:value="Settings.state.stickyActiveTab"
-      :default="DEFAULT_SETTINGS.stickyActiveTab"
-      :inactive="!Settings.state.tabsTree"
       @update:value="Settings.saveDebounced(150)")
     ToggleField(
       label="settings.sticky_ancestor_tabs"

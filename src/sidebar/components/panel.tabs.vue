@@ -73,10 +73,11 @@ onMounted(() => {
     scrollBoxEl = scrollBox.value.getScrollBox()
     if (scrollBoxEl) {
       Sidebar.setPanelEls(props.panel.id, { scrollBox: scrollBoxEl })
-      scrollBoxEl.addEventListener('scroll', scheduleStickyUpdate, { passive: true })
+      if (Settings.stickyTabs) {
+        scrollBoxEl.addEventListener('scroll', scheduleStickyUpdate, { passive: true })
+      }
     }
   }
-  scheduleStickyUpdate()
 })
 
 onBeforeUnmount(() => {

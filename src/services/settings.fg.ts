@@ -129,6 +129,7 @@ export function updateSettings(settings?: SettingsState | null): void {
   const markWindowPreface = prev.markWindowPreface !== next.markWindowPreface
   const tabsUnreadMark = prev.tabsUnreadMark !== next.tabsUnreadMark
   const copyTemplates = prev.copyTemplates !== next.copyTemplates
+  const stickyActiveTab = prev.stickyActiveTab !== next.stickyActiveTab
   const stickyAncestorTabs = prev.stickyAncestorTabs !== next.stickyAncestorTabs
   const stickyAncestorTabsLimit = prev.stickyAncestorTabsLimit !== next.stickyAncestorTabsLimit
   const stickyAncestorTabsLayout = prev.stickyAncestorTabsLayout !== next.stickyAncestorTabsLayout
@@ -233,10 +234,16 @@ export function updateSettings(settings?: SettingsState | null): void {
 
   Search.parseShortcuts()
 
-  if (stickyAncestorTabs || stickyAncestorTabsLimit || stickyAncestorTabsLayout) {
+  if (
+    stickyActiveTab ||
+    stickyAncestorTabs ||
+    stickyAncestorTabsLimit ||
+    stickyAncestorTabsLayout
+  ) {
     const actPanel = Sidebar.panelsById[Sidebar.activePanelId]
     if (Utils.isTabsPanel(actPanel)) {
-      Tabs.calcStickyTabs(actPanel)
+      if (Settings.stickyTabs) Tabs.calcStickyTabs(actPanel)
+      else Tabs.resetStickyTabs(actPanel)
     }
   }
 }

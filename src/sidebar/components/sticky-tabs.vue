@@ -1,6 +1,6 @@
 <template lang="pug">
 .StickyTabs(
-  v-if="Settings.state.tabsTree && Settings.stickyTabs"
+  v-if="Settings.stickyTabs"
   v-show="show"
   :data-hide="DnD.reactive.isStarted")
   .sticky-box

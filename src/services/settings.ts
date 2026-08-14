@@ -120,9 +120,13 @@ export function updPrecalcSettings() {
   activateAfterClosingPrev = state.activateAfterClosing === 'prev'
   activateAfterClosingPrevAct = state.activateAfterClosing === 'prev_act'
 
-  stickyTabs = state.stickyActiveTab || state.stickyAncestorTabs
-  stickyAncestorTabsLimit =
-    typeof state.stickyAncestorTabsLimit === 'number' ? state.stickyAncestorTabsLimit : 16
+  stickyTabs = state.stickyActiveTab || (state.tabsTree && state.stickyAncestorTabs)
+  if (state.tabsTree) {
+    stickyAncestorTabsLimit =
+      typeof state.stickyAncestorTabsLimit === 'number' ? state.stickyAncestorTabsLimit : 16
+  } else {
+    stickyAncestorTabsLimit = 0
+  }
   stickyAncestorTabsLayoutCol = state.stickyAncestorTabsLayout === 'col'
   stickyAncestorTabsLayoutRow = state.stickyAncestorTabsLayout === 'row'
 }

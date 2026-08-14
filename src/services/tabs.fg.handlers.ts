@@ -1737,7 +1737,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
     Tabs.calcStickyTabs(panel)
     if (prevActive && prevActive.panelId !== panel.id) {
       const prevPanel = Sidebar.panelsById[prevActive.panelId]
-      if (Utils.isTabsPanel(prevPanel)) Tabs.calcStickyTabs(prevPanel)
+      if (Utils.isTabsPanel(prevPanel)) Tabs.resetStickyTabs(prevPanel)
     }
   }
 

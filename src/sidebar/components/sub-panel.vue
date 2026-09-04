@@ -6,7 +6,8 @@
   @mouseup.stop="onMouseUp"
   @dblclick.stop="")
   .overlay(
-    data-dnd-type="tab"
+    data-dnd-type="nav-item"
+    :data-dnd-id="Sidebar.activePanelId"
     @dragenter="onDragEnter"
     @click="onOverlayClick"
     @drop="onDrop")

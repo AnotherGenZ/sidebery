@@ -4,7 +4,7 @@
   :data-showed="Settings.state.searchBarMode === 'static' || Search.reactive.barIsShowed"
   :data-active="Search.reactive.popupIsShowed || Search.reactive.barIsFocused"
   :data-focused="Search.reactive.barIsFocused"
-  :data-filled="!!Search.reactive.rawQuery")
+  :data-filled="Search.reactive.barIsFilled")
   .search-icon(@mousedown.stop.prevent="" @mouseup.stop.prevent="")
     svg: use(href="#icon_search")
   .placeholder {{translate('bar.search.placeholder')}}
@@ -113,14 +113,9 @@ function onKD(e: KeyboardEvent): void {
 }
 
 function onInput(e: InputEvent) {
-  // Ignore text entered during composition, before the real text is committed.
-  // For example, when using an Input Method Editor for typing Japanese, you enter temporary
-  // latin characters that you convert into the appropriate kanas or kanjis, and then validate.
-  // Also, on some systems, the usual dead keys work like that.
-  // https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/isComposing
-  if (e.isComposing) return
-
   const rawQuery = (e.target as HTMLInputElement | null)?.value ?? ''
+  Search.reactive.barIsFilled = !!rawQuery
+  if (e.isComposing) return
 
   if (Settings.state.searchInputTimeout > 0) {
     Search.searchDebounced(Settings.state.searchInputTimeout, rawQuery)

@@ -21,6 +21,7 @@ export interface SearchState {
   popupIsShowed: boolean
   barIsShowed: boolean
   barIsFocused: boolean
+  barIsFilled: boolean
   active: boolean
   rawQuery: string
 }
@@ -41,6 +42,7 @@ export let reactive: SearchState = {
   popupIsShowed: false,
   barIsShowed: false,
   barIsFocused: false,
+  barIsFilled: false,
   active: false,
   rawQuery: '',
 }
@@ -65,6 +67,7 @@ export function onOutsideSearchInput(q: string): void {
   if (!Search.reactive.barIsShowed && Search.query) Search.toggleBar()
 
   reactive.rawQuery = q
+  reactive.barIsFilled = !!q
 
   if (Settings.state.searchInputTimeout > 0) {
     searchDebounced(Settings.state.searchInputTimeout, q)

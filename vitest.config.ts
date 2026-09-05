@@ -10,6 +10,9 @@ export default defineConfig({
   test: {
     dir: './src',
     environment: 'jsdom',
+    pool: 'forks',
+    isolate: true,
     setupFiles: ['./tests/env-setup.ts', './tests/ipc-setup.ts'],
+    fsModuleCache: true,
   },
 })

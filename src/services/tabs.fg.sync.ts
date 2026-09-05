@@ -64,9 +64,9 @@ function getSyncedContainer(containerId: ID): Sync.Google.SyncedContainer | void
       color: container.color,
       icon: container.icon,
       proxified: container.proxified,
-      proxy: container.proxy ? Utils.cloneObject(container.proxy) : null,
+      proxy: container.proxy ? Utils.clone(container.proxy) : null,
       reopenRulesActive: container.reopenRulesActive,
-      reopenRules: Utils.cloneArray(container.reopenRules),
+      reopenRules: Utils.clone(container.reopenRules),
       userAgentActive: container.userAgentActive,
       userAgent: container.userAgent,
     }

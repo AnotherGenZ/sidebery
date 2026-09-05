@@ -705,7 +705,7 @@ async function _saveTabs(
     sameProfile: true,
 
     tabs: entryTabs,
-    containers: Utils.cloneObject(tabsBatch.containers),
+    containers: Utils.clone(tabsBatch.containers),
 
     gdFileId: targetFileId,
   }

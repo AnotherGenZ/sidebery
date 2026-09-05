@@ -252,7 +252,7 @@ async function importData(): Promise<void> {
 
   state.importing = true
 
-  let backup = Utils.cloneObject(props.importedData)
+  let backup = Utils.clone(props.importedData)
   let containersIds: IdMap | undefined
   let noErrors = true
 

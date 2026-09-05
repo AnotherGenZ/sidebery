@@ -139,7 +139,7 @@ export function onContainerCreated(info: browser.contextualIdentities.ChangeInfo
   const ffContainer = info.contextualIdentity
   const id = ffContainer.cookieStoreId
   const existedContainer = Containers.reactive.byId[id]
-  const container = existedContainer ?? Utils.cloneObject(DEFAULT_CONTAINER)
+  const container = existedContainer ?? Utils.clone(DEFAULT_CONTAINER)
   container.cookieStoreId = id
   container.id = id
   container.name = ffContainer.name

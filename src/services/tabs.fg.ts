@@ -2064,13 +2064,13 @@ export function queryTab(props: Partial<T.Tab>): T.Tab | null {
       ((p: keyof T.Tab) => t[p] === props[p]) as (p: string) => boolean
     )
   })
-  if (tab) return Utils.cloneObject(tab)
+  if (tab) return Utils.clone(tab)
   else return null
 }
 
 export function getTabs(tabIds?: ID[]): T.Tab[] | undefined {
   const tabs = tabIds ? Tabs.list.filter(t => tabIds.includes(t.id)) : Tabs.list
-  if (tabs.length) return Utils.cloneArray(tabs)
+  if (tabs.length) return Utils.clone(tabs)
 }
 
 export function getTabsTreeData(): T.TabsTreeData {

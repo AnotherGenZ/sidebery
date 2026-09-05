@@ -62,7 +62,7 @@ function onRemovedWebData(): void {
   }
 
   if (containersSaveNeeded) {
-    Store.set({ containers: Utils.cloneObject(Containers.reactive.byId) })
+    Store.set({ containers: Utils.clone(Containers.reactive.byId) })
   }
   if (settingsSaveNeeded) {
     Settings.saveSettings()

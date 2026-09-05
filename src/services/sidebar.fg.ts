@@ -911,7 +911,7 @@ function getSidebarConfig(): T.SidebarConfig {
     if (panel) panels[id] = createPanelConfigFromPanel(panel)
   }
 
-  return { panels, nav: Utils.cloneArray(reactive.nav) }
+  return { panels, nav: Utils.clone(reactive.nav) }
 }
 
 export function saveSidebar(delay?: number): Promise<void> {
@@ -948,7 +948,7 @@ export function createPanelFromConfig(config: T.PanelConfig): T.Panel | null {
   panel.reactive.iconIMG = config.iconIMG
   if (Utils.isTabsPanel(panel)) {
     panel.reactive.newTabCtx = panel.newTabCtx
-    panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+    panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   } else if (Utils.isBookmarksPanel(panel)) {
     panel.reactive.viewMode = panel.viewMode
   }
@@ -959,7 +959,7 @@ export function createPanelFromConfig(config: T.PanelConfig): T.Panel | null {
 }
 
 function createPanelConfigFromPanel(srcPanel: T.Panel): T.PanelConfig {
-  srcPanel = Utils.cloneObject(srcPanel)
+  srcPanel = Utils.clone(srcPanel)
   if (Utils.isTabsPanel(srcPanel)) {
     return Utils.recreateNormalizedObject(srcPanel, D.TABS_PANEL_CONFIG)
   } else if (Utils.isBookmarksPanel(srcPanel)) {
@@ -1037,7 +1037,7 @@ async function updateSidebar(newConfig?: T.SidebarConfig): Promise<void> {
 
       if (Utils.isTabsPanel(panel)) {
         panel.reactive.newTabCtx = panel.newTabCtx
-        panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+        panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
       } else if (Utils.isBookmarksPanel(panel)) {
         panel.reactive.viewMode = panel.viewMode
       }
@@ -1561,7 +1561,7 @@ export function getActivePanelConfig(): T.PanelConfig | undefined {
   else if (Utils.isSyncPanel(panel)) defaults = D.SYNC_PANEL_CONFIG
   if (!defaults) return
 
-  return Utils.cloneObject(Utils.recreateNormalizedObject(panel, defaults))
+  return Utils.clone(Utils.recreateNormalizedObject(panel, defaults))
 }
 
 export async function askHowRemoveTabsPanel(panelId: ID): Promise<string | null> {
@@ -1779,7 +1779,7 @@ export function getPanelAutoName(type: E.PanelType): string | undefined {
  * Creates tabs-panel object.
  */
 export function createTabsPanel(conf?: Partial<T.TabsPanelConfig>): T.TabsPanel {
-  const panel = Utils.cloneObject(D.TABS_PANEL_STATE)
+  const panel = Utils.clone(D.TABS_PANEL_STATE)
 
   if (conf) Utils.updateObject(panel, conf, conf)
   panel.id = Utils.uid()
@@ -1790,7 +1790,7 @@ export function createTabsPanel(conf?: Partial<T.TabsPanelConfig>): T.TabsPanel 
   panel.reactive.iconSVG = panel.iconSVG
   panel.reactive.iconIMG = panel.iconIMG
   panel.reactive.newTabCtx = panel.newTabCtx
-  panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   panel.reactive.tooltip = getPanelTooltip(panel)
 
   if (reactFn) panel.reactive = reactFn(panel.reactive)
@@ -1826,7 +1826,7 @@ export function getIndexForNewTabsPanel(append?: boolean): number {
  * Creates bookmarks-panel object.
  */
 export function createBookmarksPanel(conf?: Partial<T.BookmarksPanelConfig>): T.BookmarksPanel {
-  const panel = Utils.cloneObject(D.BOOKMARKS_PANEL_STATE)
+  const panel = Utils.clone(D.BOOKMARKS_PANEL_STATE)
 
   if (conf) Utils.updateObject(panel, conf, conf)
   if (!panel.id) panel.id = Utils.uid()
@@ -2440,7 +2440,7 @@ export async function convertToBookmarksPanel(
   // Preserve tree state (folded/expanded folders)
   const srcTreeState = Bookmarks.reactive.expanded[panel.id]
   if (srcTreeState) {
-    Bookmarks.reactive.expanded[bookmarksPanel.id] = Utils.cloneObject(srcTreeState)
+    Bookmarks.reactive.expanded[bookmarksPanel.id] = Utils.clone(srcTreeState)
     Bookmarks.saveBookmarksTree()
   }
 
@@ -2518,8 +2518,8 @@ export async function convertToTabsPanel(
     tabsPanelConfig.noEmpty = bookmarksPanel.srcPanelConfig.noEmpty
     tabsPanelConfig.newTabCtx = bookmarksPanel.srcPanelConfig.newTabCtx
     tabsPanelConfig.dropTabCtx = bookmarksPanel.srcPanelConfig.dropTabCtx
-    tabsPanelConfig.moveRules = Utils.cloneArray(bookmarksPanel.srcPanelConfig.moveRules)
-    tabsPanelConfig.newTabBtns = Utils.cloneArray(bookmarksPanel.srcPanelConfig.newTabBtns)
+    tabsPanelConfig.moveRules = Utils.clone(bookmarksPanel.srcPanelConfig.moveRules)
+    tabsPanelConfig.newTabBtns = Utils.clone(bookmarksPanel.srcPanelConfig.newTabBtns)
   }
   let tabsPanel = createTabsPanel(tabsPanelConfig)
   if (bookmarksPanel.srcPanelConfig) tabsPanel.id = bookmarksPanel.srcPanelConfig.id

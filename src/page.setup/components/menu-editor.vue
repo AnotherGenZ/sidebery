@@ -400,12 +400,12 @@ function moveSelected(e: WheelEvent, type: string): void {
  * Reset tabs menu
  */
 function resetTabsMenu(): void {
-  Menu.setTabsConf(Utils.cloneArray(D.TABS_MENU))
+  Menu.setTabsConf(Utils.clone(D.TABS_MENU))
   state.tabsConf = Menu.tabsConf
   saveDebounced(250)
 }
 function resetTabsPanelMenu(): void {
-  Menu.setTabsPanelConf(Utils.cloneArray(D.TABS_PANEL_MENU))
+  Menu.setTabsPanelConf(Utils.clone(D.TABS_PANEL_MENU))
   saveDebounced(250)
   state.tabsPanelConf = Menu.tabsPanelConf
 }
@@ -414,12 +414,12 @@ function resetTabsPanelMenu(): void {
  * Reset bookmarks menu
  */
 function resetBookmarksMenu(): void {
-  Menu.setBookmarksConf(Utils.cloneArray(D.BOOKMARKS_MENU))
+  Menu.setBookmarksConf(Utils.clone(D.BOOKMARKS_MENU))
   state.bookmarksConf = Menu.bookmarksConf
   saveDebounced(250)
 }
 function resetBookmarksPanelMenu(): void {
-  Menu.setBookmarksPanelConf(Utils.cloneArray(D.BOOKMARKS_PANEL_MENU))
+  Menu.setBookmarksPanelConf(Utils.clone(D.BOOKMARKS_PANEL_MENU))
   state.bookmarksPanelConf = Menu.bookmarksPanelConf
   saveDebounced(250)
 }

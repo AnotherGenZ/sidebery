@@ -329,7 +329,7 @@ export async function getDbgDetails(): Promise<T.DbgInfo> {
   const dbg: T.DbgInfo = {
     addonVersion: browser.runtime.getManifest().version,
     firefoxVersion: (await browser.runtime.getBrowserInfo()).version,
-    settings: Utils.cloneObject(Settings.state),
+    settings: Utils.clone(Settings.state),
   }
 
   try {
@@ -391,7 +391,7 @@ export async function getDbgDetails(): Promise<T.DbgInfo> {
     if (containers) {
       dbg.containers = []
       for (const container of Object.values(containers)) {
-        const clone = Utils.cloneObject(container)
+        const clone = Utils.clone(container)
         if (clone.name) clone.name = clone.name.length.toString()
         if (clone.icon) clone.icon = '...'
         if (clone.proxy) clone.proxy = { type: clone.proxy.type }

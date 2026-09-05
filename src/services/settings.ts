@@ -4,7 +4,7 @@ import * as Utils from 'src/utils'
 import * as Info from 'src/services/info'
 import * as Logs from 'src/services/logs'
 
-export let state = Utils.cloneObject(DEFAULT_SETTINGS)
+export let state = Utils.clone(DEFAULT_SETTINGS)
 
 export let updateWinPrefaceOnPanelSwitch = false
 export let initSaveNeeded = false

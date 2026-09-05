@@ -642,47 +642,81 @@ export function getGroupName(groupUrl: string): string | undefined {
 }
 
 /**
- * Clone Array
+ * Clone (Not all types, check impl)
  */
-export function cloneArray<T>(arr: readonly T[]): T[] {
-  const out: T[] = []
-  for (const item of arr) {
-    if (Array.isArray(item)) {
-      out.push(cloneArray<T>(item) as unknown as T)
-    } else if (typeof item === 'object' && item !== null) {
-      out.push(cloneObject(item))
-    } else {
-      out.push(item)
+export function clone<T extends any[] | Record<any, any> | Map<any, any> | Set<any>>(v: T): T {
+  const cloned = new WeakMap<any, any>()
+  return cloneAny(v, cloned) as T
+}
+function cloneAny<T>(v: T, cloned: WeakMap<any, any>) {
+  if (v === null || typeof v === 'number' || typeof v === 'string' || typeof v === 'boolean') {
+    return v
+  }
+  if (Array.isArray(v)) return cloneArray(v, cloned) as T
+  if (v instanceof Set) return cloneSet(v, cloned) as T
+  if (v instanceof Map) return cloneMap(v, cloned) as T
+  if (v instanceof RegExp) return new RegExp(v.source, v.flags)
+  if (v instanceof Date) return new Date(v.getTime())
+  if (v instanceof URL) return new URL(v.href)
+  if (v instanceof Promise) return v
+  if (v instanceof Error) return v
+  if (v instanceof Function) return v
+  if (v instanceof Object) {
+    if (Object.getPrototypeOf(v) === Object.prototype) return cloneObject(v, cloned) as T
+    if (v) return cloneInstance(v, cloned) as T
+  }
+}
+function cloneArray(src: any[], cloned: WeakMap<any, any>): any[] {
+  const dst: any[] = []
+  if (cloned.has(src)) return cloned.get(src)
+  cloned.set(src, dst)
+  for (const v of src) {
+    dst.push(cloneAny(v, cloned))
+  }
+  return dst
+}
+function cloneSet(src: Set<any>, cloned: WeakMap<any, any>): Set<any> {
+  const dst = new Set()
+  if (cloned.has(src)) return cloned.get(src)
+  cloned.set(src, dst)
+  for (const v of src) {
+    dst.add(cloneAny(v, cloned))
+  }
+  return dst
+}
+function cloneMap(src: Map<any, any>, cloned: WeakMap<any, any>): Map<any, any> {
+  const dst = new Map()
+  if (cloned.has(src)) return cloned.get(src)
+  cloned.set(src, dst)
+  for (const [k, v] of src) {
+    const dstK = cloneAny(k, cloned)
+    if (dstK === undefined) continue
+    const dstV = cloneAny(v, cloned)
+    dst.set(dstK, dstV)
+  }
+  return dst
+}
+function cloneObject(src: Record<any, any>, cloned: WeakMap<any, any>): Record<any, any> {
+  const dst: Record<any, any> = {}
+  if (cloned.has(src)) return cloned.get(src)
+  cloned.set(src, dst)
+  for (const k of Object.keys(src)) {
+    dst[k] = cloneAny(src[k], cloned)
+  }
+  return dst
+}
+function cloneInstance<T extends object>(src: T, cloned: WeakMap<any, any>): T {
+  const dst = Object.create(Object.getPrototypeOf(src)) as T
+  if (cloned.has(src)) return cloned.get(src)
+  cloned.set(src, dst)
+  for (const key of Reflect.ownKeys(src)) {
+    const desc = Reflect.getOwnPropertyDescriptor(src, key)
+    if (desc) {
+      if (desc.value) desc.value = cloneAny(desc.value, cloned) as typeof desc.value
+      Reflect.defineProperty(dst, key, desc)
     }
   }
-  return out
-}
-
-/**
- * Clone Object
- */
-export function cloneObject<T extends object>(obj: T): T {
-  const out = {} as T
-  for (const prop of Object.keys(obj) as (keyof T)[]) {
-    if (Array.isArray(obj[prop])) {
-      out[prop] = cloneArray(obj[prop] as unknown[]) as T[keyof T]
-    } else if (typeof obj[prop] === 'object' && obj[prop] !== null) {
-      out[prop] = cloneObject(obj[prop] as object) as T[keyof T]
-    } else {
-      out[prop] = obj[prop] as T[keyof T]
-    }
-  }
-  return out
-}
-
-export function clone<T>(value: T): T {
-  if (Array.isArray(value)) {
-    return cloneArray(value) as T
-  } else if (typeof value === 'object' && value !== null) {
-    return cloneObject(value)
-  } else {
-    return value
-  }
+  return dst
 }
 
 /**
@@ -745,7 +779,7 @@ export function restoreUrl(url?: string): string | undefined {
 }
 
 export function recreateNormalizedObject<T extends object>(obj: Partial<T>, defaults: T): T {
-  const result = structuredClone(defaults)
+  const result = clone(defaults)
   for (const key of Object.keys(defaults) as (keyof T)[]) {
     if (obj[key] !== undefined) result[key] = obj[key]
   }
@@ -753,7 +787,7 @@ export function recreateNormalizedObject<T extends object>(obj: Partial<T>, defa
 }
 
 export function normalizeObject<T extends object>(obj: T, defaults: T): void {
-  const clonedDefaults = structuredClone(defaults)
+  const clonedDefaults = clone(defaults)
   for (const key of Object.keys(clonedDefaults) as (keyof T)[]) {
     if (obj[key] === undefined) obj[key] = clonedDefaults[key]
   }

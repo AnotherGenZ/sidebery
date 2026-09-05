@@ -75,7 +75,7 @@ export async function move(
     if (allInWin && tabsInfo.length > 1) return
 
     Tabs.detachTabs(tabsInfo.map(t => t.id))
-    const info = Utils.cloneArray<T.ItemInfo>(tabsInfo)
+    const info = Utils.clone(tabsInfo) as DeepMutable<T.ItemInfo>[]
     const conf = { incognito: dst.incognito, tabId: MOVEID }
     if (dst.panelId) info.forEach(t => (t.panelId = dst.panelId))
     IPC.bg('createWindowWithTabs', info, conf).finally(() => Tabs.detachingTabIds.clear())
@@ -645,7 +645,7 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
     }
 
     // Prepend to output array
-    detachedTabs.unshift(Utils.cloneObject(tab))
+    detachedTabs.unshift(Utils.clone(tab))
 
     // Remove from local state
     delete Tabs.byId[id]

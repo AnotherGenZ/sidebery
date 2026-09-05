@@ -28,7 +28,7 @@ export async function load(): Promise<void> {
   for (const ffContainer of ffContainers) {
     let container = containers[ffContainer.cookieStoreId]
     if (!container) {
-      container = Utils.cloneObject(DEFAULT_CONTAINER)
+      container = Utils.clone(DEFAULT_CONTAINER)
       containers[ffContainer.cookieStoreId] = container
       if (!saveNeeded) saveNeeded = true
     }
@@ -86,12 +86,12 @@ export async function saveContainers(delay?: number, invoker?: IPCNodeInfo): Pro
   clearTimeout(saveContainersTimeout)
 
   if (!delay) {
-    const containers = Utils.cloneObject(Containers.reactive.byId)
+    const containers = Utils.clone(Containers.reactive.byId)
     if (invoker) return Store.setFromRemoteFg({ containers }, invoker)
     else return Store.set({ containers })
   } else {
     saveContainersTimeout = setTimeout(() => {
-      Store.set({ containers: Utils.cloneObject(Containers.reactive.byId) })
+      Store.set({ containers: Utils.clone(Containers.reactive.byId) })
     }, delay)
   }
 }

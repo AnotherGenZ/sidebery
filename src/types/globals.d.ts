@@ -26,3 +26,7 @@ interface Window {
 type DeepReadonly<T> = {
   readonly [P in keyof T]: DeepReadonly<T[P]>
 }
+
+type DeepMutable<T> = {
+  -readonly [K in keyof T]: DeepMutable<T[K]>
+}

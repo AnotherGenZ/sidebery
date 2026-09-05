@@ -7,5 +7,5 @@ export * from 'src/services/sidebar-config'
 
 export async function saveSidebarConfig(delay?: number) {
   Logs.info('SidebarConfig.saveSidebarConfig')
-  return Store.set({ sidebar: Utils.cloneObject(SidebarConfig.reactive) }, delay)
+  return Store.set({ sidebar: Utils.clone(SidebarConfig.reactive) }, delay)
 }

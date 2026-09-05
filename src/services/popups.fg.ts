@@ -125,9 +125,9 @@ export function openPanelPopup(conf: Partial<T.PanelConfig>, index?: number): Pr
       panelConfig = Utils.recreateNormalizedObject(panel as T.TabsPanelConfig, TABS_PANEL_CONFIG)
     } else {
       if (conf.type === E.PanelType.tabs) {
-        panelConfig = Utils.cloneObject(TABS_PANEL_CONFIG)
+        panelConfig = Utils.clone(TABS_PANEL_CONFIG)
       } else if (conf.type === E.PanelType.bookmarks) {
-        panelConfig = Utils.cloneObject(BOOKMARKS_PANEL_CONFIG)
+        panelConfig = Utils.clone(BOOKMARKS_PANEL_CONFIG)
       } else {
         return res(null)
       }
@@ -151,7 +151,7 @@ export function openContainerPopup(containerId: ID): Promise<ID | null> {
   return new Promise(res => {
     let container = Containers.reactive.byId[containerId]
     if (!container) {
-      container = Utils.cloneObject(DEFAULT_CONTAINER)
+      container = Utils.clone(DEFAULT_CONTAINER)
       container.name = ''
       container.icon = 'fingerprint'
       container.color = 'toolbar'
@@ -179,7 +179,7 @@ export function openNewTabShortcutsPopup(panel?: T.PanelConfig): void {
 
   reactive.newTabShortcutsPopup = {
     panelId: panel.id,
-    rawShortcuts: Utils.cloneArray(panel.newTabBtns),
+    rawShortcuts: Utils.clone(panel.newTabBtns),
   }
 }
 
@@ -200,7 +200,7 @@ export function closeSiteConfigPopup(): void {
 export function openTabMoveRulesPopup(panel?: T.PanelConfig) {
   if (!Utils.isTabsPanel(panel)) return
 
-  reactive.tabMoveRulesPopup = { panelId: panel.id, rules: Utils.cloneArray(panel.moveRules) }
+  reactive.tabMoveRulesPopup = { panelId: panel.id, rules: Utils.clone(panel.moveRules) }
 }
 
 export function closeTabMoveRulesPopup(): void {

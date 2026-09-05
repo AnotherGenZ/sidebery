@@ -56,7 +56,7 @@ export function getCtxMenuConf() {
   if (Menu.bookmarksConf) contextMenu.bookmarks = Menu.bookmarksConf
   if (Menu.bookmarksPanelConf) contextMenu.bookmarksPanel = Menu.bookmarksPanelConf
 
-  return Utils.cloneObject(contextMenu)
+  return Utils.clone(contextMenu)
 }
 
 export async function saveCtxMenu(delay?: number) {
@@ -105,13 +105,13 @@ function onMenuHiddenFg(): void {
 export function setCtxMenu(conf?: T.MenuConfs) {
   if (!conf) conf = {}
   if (conf.tabs?.length) tabsConf = conf.tabs
-  else tabsConf = Utils.cloneArray(D.TABS_MENU)
+  else tabsConf = Utils.clone(D.TABS_MENU)
   if (conf.tabsPanel?.length) tabsPanelConf = conf.tabsPanel
-  else tabsPanelConf = Utils.cloneArray(D.TABS_PANEL_MENU)
+  else tabsPanelConf = Utils.clone(D.TABS_PANEL_MENU)
   if (conf.bookmarks?.length) bookmarksConf = conf.bookmarks
-  else bookmarksConf = Utils.cloneArray(D.BOOKMARKS_MENU)
+  else bookmarksConf = Utils.clone(D.BOOKMARKS_MENU)
   if (conf.bookmarksPanel?.length) bookmarksPanelConf = conf.bookmarksPanel
-  else bookmarksPanelConf = Utils.cloneArray(D.BOOKMARKS_PANEL_MENU)
+  else bookmarksPanelConf = Utils.clone(D.BOOKMARKS_PANEL_MENU)
 }
 
 export function setupListeners(): void {

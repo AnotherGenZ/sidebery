@@ -461,7 +461,7 @@ export function saveBookmarksTree(delay = 128): void {
 
   clearTimeout(saveBookmarksTreeTimeout)
   saveBookmarksTreeTimeout = setTimeout(() => {
-    const expandedBookmarkFolders = Utils.cloneObject(Bookmarks.reactive.expanded)
+    const expandedBookmarkFolders = Utils.clone(Bookmarks.reactive.expanded)
     Store.set({ expandedBookmarkFolders }, 500)
   }, delay)
 }

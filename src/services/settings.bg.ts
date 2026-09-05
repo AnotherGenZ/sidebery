@@ -22,7 +22,7 @@ export async function load() {
 export async function saveSettings(): Promise<void> {
   Logs.info('Settings.saveSettings')
 
-  const clone = Utils.cloneObject(Settings.state)
+  const clone = Utils.clone(Settings.state)
   const settings = Utils.recreateNormalizedObject(clone, DEFAULT_SETTINGS)
   await Store.set({ settings })
 

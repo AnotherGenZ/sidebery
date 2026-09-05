@@ -117,7 +117,7 @@ export function parseSnapshot(
         if (!panelState) {
           let panelConfig = snapshot.sidebar.panels[tab.panelId]
           if (!panelConfig) {
-            panelConfig = Utils.cloneObject(D.TABS_PANEL_CONFIG)
+            panelConfig = Utils.clone(D.TABS_PANEL_CONFIG)
             if (tab.pinned && tab.panelId === GLOB_PINNED_ID) {
               panelConfig.id = GLOB_PINNED_ID
               panelConfig.name = translate('snapshot.global_pin_title')

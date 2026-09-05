@@ -364,7 +364,7 @@ async function applyBtnRules(btn?: NewTabBtn): Promise<void> {
     }
     // Reopening tab
     else if (targetContainerId && tab.cookieStoreId !== targetContainerId) {
-      const info: ItemInfo = Utils.cloneObject(tab)
+      const info: ItemInfo = Utils.clone(tab)
       if (btn?.url) info.url = btn.url
       else if (info.url === 'about:blank' && tab.title && D.INITIAL_TITLE_RE.test(tab.title)) {
         info.url = 'https://' + tab.title

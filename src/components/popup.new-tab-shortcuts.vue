@@ -231,7 +231,7 @@ function onAddBr() {
   newShortcutContainerId.value = 'none'
   Popups.reactive.newTabShortcutsPopup.rawShortcuts = rawShortcuts
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }
@@ -269,7 +269,7 @@ function onAdd() {
   newShortcutURL.value = ''
   newShortcutContainerId.value = 'none'
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }
@@ -296,7 +296,7 @@ function shortcutUp(index: number) {
 
   panel.newTabBtns = Utils.clone(rawShortcuts)
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }
@@ -317,7 +317,7 @@ function shortcutDown(index: number): void {
 
   panel.newTabBtns = Utils.clone(rawShortcuts)
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }
@@ -334,7 +334,7 @@ function removeShortcut(index: number): void {
 
   panel.newTabBtns = Utils.clone(rawShortcuts)
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }
@@ -399,7 +399,7 @@ function onSaveEdit() {
   newShortcutURL.value = ''
   newShortcutContainerId.value = 'none'
 
-  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+  if (Info.isSidebar) panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
   else SidebarConf.saveSidebarConfig(1000)
 }

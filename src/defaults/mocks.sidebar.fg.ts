@@ -22,7 +22,7 @@ export function addMPanel(p: Partial<T.Panel>) {
   if (p.iconIMG) panel.reactive.iconIMG = p.iconIMG
   if (Utils.isTabsPanel(panel)) {
     panel.reactive.newTabCtx = panel.newTabCtx
-    panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+    panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
   } else if (Utils.isBookmarksPanel(panel)) {
     panel.reactive.viewMode = panel.viewMode
   }

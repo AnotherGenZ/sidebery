@@ -31,7 +31,7 @@ export async function loadSidebarConfig() {
 }
 
 export function createTabsPanelConfig(conf?: Partial<T.TabsPanelConfig>): T.TabsPanelConfig {
-  const panelConf = Utils.cloneObject(D.TABS_PANEL_CONFIG)
+  const panelConf = Utils.clone(D.TABS_PANEL_CONFIG)
 
   if (conf) Utils.updateObject(panelConf, conf, conf)
 
@@ -44,7 +44,7 @@ export function createTabsPanelConfig(conf?: Partial<T.TabsPanelConfig>): T.Tabs
 export function createBookmarksPanelConfig(
   conf?: Partial<T.BookmarksPanelConfig>
 ): T.BookmarksPanelConfig {
-  const panelConf = Utils.cloneObject(D.BOOKMARKS_PANEL_CONFIG)
+  const panelConf = Utils.clone(D.BOOKMARKS_PANEL_CONFIG)
 
   if (conf) Utils.updateObject(panelConf, conf, conf)
 
@@ -56,11 +56,11 @@ export function createBookmarksPanelConfig(
 }
 
 export function createHistoryPanelConfig(): T.HistoryPanelConfig {
-  return Utils.cloneObject(D.HISTORY_PANEL_CONFIG)
+  return Utils.clone(D.HISTORY_PANEL_CONFIG)
 }
 
 export function createSyncPanelConfig(): T.SyncPanelConfig {
-  return Utils.cloneObject(D.SYNC_PANEL_CONFIG)
+  return Utils.clone(D.SYNC_PANEL_CONFIG)
 }
 
 export function createDefaultSidebarConfig(): T.SidebarConfig {

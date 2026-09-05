@@ -260,3 +260,36 @@ describe('Utils.getDomain()', () => {
     expect(Utils.getDomain(hostname, false, 3)).toBe('')
   })
 })
+
+describe('Utils.clone()', () => {
+  test('object', () => {
+    const src = {
+      a: undefined,
+      b: null,
+      c: 123,
+      d: 'abc',
+      self: null as any,
+      arr: [0],
+      set: new Set(),
+    }
+    src.self = src
+    src.set.add('a')
+    src.set.add('b')
+    const clone = Utils.clone(src)
+    expect(clone === src).toBe(false)
+    expect(clone.a).toBe(undefined)
+    expect(clone.a === src.a).toBe(true)
+    expect(clone.b).toBe(null)
+    expect(clone.b === src.b).toBe(true)
+    expect(clone.c).toBe(123)
+    expect(clone.c === src.c).toBe(true)
+    expect(clone.d).toBe('abc')
+    expect(clone.d === src.d).toBe(true)
+    expect(clone.self === clone).toBe(true)
+    expect(clone.self === src).toBe(false)
+    expect(clone.arr === src.arr).toBe(false)
+    expect(clone.arr[0]).toBe(0)
+    expect(clone.set === src.set).toBe(false)
+    expect(clone.set.size).toBe(2)
+  })
+})

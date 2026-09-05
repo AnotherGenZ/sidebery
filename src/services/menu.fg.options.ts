@@ -162,7 +162,7 @@ export const menuOptions: Record<string, () => MenuOption | MenuOption[] | undef
               panel.newTabBtns.push(c.name)
               if (opt.flag) opt.flag.active = true
             }
-            panel.reactive.newTabBtns = Utils.cloneArray(panel.newTabBtns)
+            panel.reactive.newTabBtns = Utils.clone(panel.newTabBtns)
             Sidebar.saveSidebar(500)
           },
         },

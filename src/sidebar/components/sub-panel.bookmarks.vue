@@ -152,6 +152,7 @@ function updateRootTree() {
   state.rootFolderId = folder?.id ?? BKM_ROOT_ID
   state.rootFolderTitle = folder?.title ?? rootTitle
 
+  panel.bookmarks = folder?.children ?? Bookmarks.tree
   panel.reactive.bookmarkIds = folder?.getChildrenIds() ?? Bookmarks.reactive.root
 }
 

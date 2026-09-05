@@ -610,37 +610,40 @@ export function recalcBookmarksPanels(): void {
     }
 
     panel.bookmarks = rootContent
-    panel.reactive.bookmarkIds = Bookmarks.getIds(rootContent)
+    panel.reactive.bookmarkIds = rootContent.map(n => n.id)
     panel.reactive.len = count
   }
 
   if (subPanels.bookmarks) {
     const panel = subPanels.bookmarks
-
-    let rootContent: Bookmarks.BkmNode[]
-    if (!panel.rootId || panel.rootId === D.BKM_ROOT_ID || panel.rootId === D.NOID) {
-      rootContent = Bookmarks.tree
-    } else {
-      if (panel.reactive.rootOffset > 0) {
-        let folder = Bookmarks.byId.get(panel.rootId)
-        if (folder) {
-          for (let i = panel.reactive.rootOffset; i-- && folder;) {
-            if (folder.parentId === D.BKM_ROOT_ID) {
-              folder = undefined
-              break
-            }
-            folder = Bookmarks.byId.get(folder.parentId)
-          }
-        }
-        rootContent = folder?.children ?? Bookmarks.tree
-      } else {
-        rootContent = Bookmarks.byId.get(panel.rootId)?.children ?? []
-      }
-    }
-
-    panel.bookmarks = rootContent
-    panel.reactive.bookmarkIds = Bookmarks.getIds(rootContent)
+    panel.bookmarks = getBookmarksTreeForSubPanel(panel)
+    panel.reactive.bookmarkIds = panel.bookmarks.map(n => n.id)
   }
+}
+
+function getBookmarksTreeForSubPanel(panel: T.BookmarksPanel): Bookmarks.BkmNode[] {
+  let rootContent: Bookmarks.BkmNode[]
+  if (!panel.rootId || panel.rootId === D.BKM_ROOT_ID || panel.rootId === D.NOID) {
+    rootContent = Bookmarks.tree
+  } else {
+    if (panel.reactive.rootOffset > 0) {
+      let folder = Bookmarks.byId.get(panel.rootId)
+      if (folder) {
+        for (let i = panel.reactive.rootOffset; i-- && folder;) {
+          if (folder.parentId === D.BKM_ROOT_ID) {
+            folder = undefined
+            break
+          }
+          folder = Bookmarks.byId.get(folder.parentId)
+        }
+      }
+      rootContent = folder?.children ?? Bookmarks.tree
+    } else {
+      rootContent = Bookmarks.byId.get(panel.rootId)?.children ?? []
+    }
+  }
+
+  return rootContent
 }
 
 let panelsBoxEl: HTMLElement | undefined
@@ -2600,6 +2603,8 @@ export function openSubPanel(type: E.SubPanelType, hostPanel?: T.Panel) {
     if (!panel) {
       panel = createBookmarksPanel({ rootId: hostPanel.bookmarksFolderId })
       if (panel.rootId === D.NOID) panel.rootId = D.BKM_ROOT_ID
+      panel.bookmarks = getBookmarksTreeForSubPanel(panel)
+      panel.reactive.bookmarkIds = panel.bookmarks.map(n => n.id)
       subPanels.bookmarks = panel
     } else {
       panel.rootId = hostPanel.bookmarksFolderId

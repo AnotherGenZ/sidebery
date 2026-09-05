@@ -391,12 +391,12 @@ function onSave() {
   if (ruleConfig) {
     ruleConfig.active = true
     if (newRuleContainerId.value !== 'none') ruleConfig.containerId = newRuleContainerId.value
-    else delete ruleConfig.containerId
+    else ruleConfig.containerId = undefined
     if (newRuleURL.value) ruleConfig.url = newRuleURL.value
-    else delete ruleConfig.url
+    else ruleConfig.url = undefined
     ruleConfig.topLvlOnly = newRuleTopLvl.value
     if (name) ruleConfig.name = name
-    else delete ruleConfig.name
+    else ruleConfig.name = undefined
   }
 
   if (Info.isSidebar) Sidebar.saveSidebar(1000)
@@ -411,9 +411,9 @@ function onSave() {
     rule.containerName = container.name
     rule.containerIcon = '#' + container.icon
     rule.containerColor = container.color
-  } else delete rule.containerId
+  } else rule.containerId = undefined
   if (newRuleURL.value) rule.url = newRuleURL.value
-  else delete rule.url
+  else rule.url = undefined
   rule.topLvlOnly = newRuleTopLvl.value
 
   // Reset inputs

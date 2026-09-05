@@ -737,7 +737,7 @@ export function cacheTabsData(delay = 300): void {
     for (const tab of Tabs.list) {
       const info: T.TabCache = { id: tab.id, url: tab.url }
       if (tab.pinned) info.pin = true
-      if (+tab.parentId > -1) info.parentId = tab.parentId
+      if ((tab.parentId as number) > -1) info.parentId = tab.parentId
       if (tab.panelId !== D.NOID) info.panelId = tab.panelId
       if (tab.folded) info.folded = tab.folded
       if (tab.cookieStoreId !== D.CONTAINER_ID) info.ctx = tab.cookieStoreId
@@ -815,14 +815,16 @@ function _saveTabData(tabId: ID, forced?: boolean): void {
       panelId: tab.panelId,
       parentId: tab.parentId,
       folded: tab.folded,
+      customTitle: undefined,
+      customColor: undefined,
     }
     tab.sessionData = data
   }
 
   if (tab.customTitle) data.customTitle = tab.customTitle
-  else delete data.customTitle
+  else data.customTitle = undefined
   if (tab.customColor) data.customColor = tab.customColor
-  else delete data.customColor
+  else data.customColor = undefined
 
   // Logs.info('Tabs.saveTabData: Saving...', tabId, { ...data })
   browser.sessions.setTabValue(tabId, 'data', data).catch(err => {

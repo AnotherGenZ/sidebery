@@ -24,7 +24,7 @@ function onBeforeRequestHandler(info: browser.webRequest.ReqDetails): optBlockin
     if (!Utils.isTabsPanel(panel)) return
 
     const reopenInContainer = tab.reopenInContainer
-    delete tab.reopenInContainer
+    tab.reopenInContainer = undefined
 
     if (panel.newTabCtx === reopenInContainer && info.method === 'GET') {
       const dst = { panelId: tab.panelId, containerId: reopenInContainer, parentId: tab.parentId }

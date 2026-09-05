@@ -189,7 +189,7 @@ export async function createFromDragEvent(e: DragEvent, dst: DstPlaceInfo): Prom
         // Remove containers info b/c it's a different profile, hence containerId
         // refers to a different container.
         // TODO: tell user about this
-        delete item.container
+        item.container = undefined
 
         // Update sidebery internal urls
         if (item.url && groupUrlStartRe.test(item.url)) {
@@ -381,7 +381,7 @@ export async function open(
       else dst.windowId = await Windows.showWindowsPopup(dst.windowChooseConf)
       if (dst.windowId === undefined || dst.windowId === D.NOID) return true
 
-      delete dst.windowChooseConf
+      dst.windowChooseConf = undefined
     }
 
     await IPC.bg('openTabs', items, dst)

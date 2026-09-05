@@ -477,7 +477,7 @@ async function importSidebar(backup: BackupData, containersIds: IdMap = {}) {
             const newId = containersIds[rule.containerId]
             if (newId) rule.containerId = newId
             else {
-              delete rule.containerId
+              rule.containerId = undefined
               rule.active = false
             }
           }

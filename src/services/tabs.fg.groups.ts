@@ -210,7 +210,7 @@ export async function getGroupInfo(groupTabId: ID): Promise<T.GroupInfo | null> 
     const domain = Utils.getHostname(tab.url)
     if (tabInfo.favIconUrl && domain) {
       out.favicons[domain] = tabInfo.favIconUrl
-      delete tabInfo.favIconUrl
+      tabInfo.favIconUrl = undefined
     }
     out.tabs.push(tabInfo)
   }
@@ -283,7 +283,7 @@ export function updateGroupOrItsChild(groupTab: T.Tab, childId = NOID, delay = 5
   // On full update
   if (fullUpdate) {
     // Remove childIds
-    if (updInfo.childIds) delete updInfo.childIds
+    if (updInfo.childIds) updInfo.childIds = undefined
   }
 
   // On children update
@@ -296,8 +296,8 @@ export function updateGroupOrItsChild(groupTab: T.Tab, childId = NOID, delay = 5
   updInfo.timerId = setTimeout(() => {
     // Check target tab
     if (groupTab.discarded || !Tabs.byId[groupTab.id]) {
-      delete updInfo.childIds
-      delete updInfo.timerId
+      updInfo.childIds = undefined
+      updInfo.timerId = undefined
       return
     }
 
@@ -305,8 +305,8 @@ export function updateGroupOrItsChild(groupTab: T.Tab, childId = NOID, delay = 5
     if (updInfo.childIds) updateGroupChildren(groupTab, updInfo.childIds)
     else updateGroup(groupTab)
 
-    delete updInfo.childIds
-    delete updInfo.timerId
+    updInfo.childIds = undefined
+    updInfo.timerId = undefined
   }, delay)
 }
 

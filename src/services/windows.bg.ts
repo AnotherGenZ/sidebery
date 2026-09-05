@@ -54,7 +54,7 @@ export async function createWithTabs(
   if (!conf) conf = {}
 
   const moveTabs = conf.tabId === MOVEID
-  if (moveTabs) delete conf.tabId
+  if (moveTabs) conf.tabId = undefined
 
   // Workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1882822
   if (conf.url === undefined && conf.tabId === undefined) conf.url = 'about:blank'

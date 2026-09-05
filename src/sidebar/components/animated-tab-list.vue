@@ -17,6 +17,9 @@ interface SdbrHTMLElement extends HTMLElement {
 
 const rootEl = ref<HTMLElement | null>(null)
 const prevPositions = new Map<HTMLElement, number>()
+const added: SdbrHTMLElement[] = []
+const moved: SdbrHTMLElement[] = []
+const moveAnimated: SdbrHTMLElement[] = []
 let prevChildren: SdbrHTMLElement[] = []
 let children: SdbrHTMLElement[] = []
 let enabled = false
@@ -68,8 +71,6 @@ onUpdated(() => {
   children = getChildEls()
 
   const fullTabHeight = Sidebar.tabHeight + Sidebar.tabMargin
-  const added: SdbrHTMLElement[] = []
-  const moved: SdbrHTMLElement[] = []
 
   for (let i = 0; i < children.length; i++) {
     const child = children[i]
@@ -90,7 +91,6 @@ onUpdated(() => {
   }
 
   if (added.length || moved.length) {
-    const moveAnimated: SdbrHTMLElement[] = []
     if (moved.length) {
       const scrollTop = scrollEl.scrollTop
 
@@ -147,6 +147,9 @@ onUpdated(() => {
   }
 
   prevPositions.clear()
+  added.length = 0
+  moved.length = 0
+  moveAnimated.length = 0
 })
 
 function forceReflow() {

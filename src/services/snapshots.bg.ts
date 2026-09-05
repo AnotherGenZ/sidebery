@@ -89,7 +89,7 @@ export async function createSnapshot(auto = false): Promise<Snapshot | undefined
       // Check container
       if (snapTab.containerId) {
         const containerConf = stored.containers[snapTab.containerId]
-        if (!containerConf) delete snapTab.containerId
+        if (!containerConf) snapTab.containerId = undefined
       }
 
       // Pinned tabs

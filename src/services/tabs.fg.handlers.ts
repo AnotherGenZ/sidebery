@@ -273,8 +273,8 @@ async function onTabCreated(nativeTab: NativeTab, attached?: boolean) {
     checkIfSessionIsRestoring(tab)
     if (tab.checkingSessionRestore) {
       const sessionRestoreIsDetected = await tab.checkingSessionRestore
-      delete tab.checkingSessionRestore
-      delete tab.resolveSessionRestoreDetection
+      tab.checkingSessionRestore = undefined
+      tab.resolveSessionRestoreDetection = undefined
       if (sessionRestoreIsDetected) return
       notSessionRestore = true
     }
@@ -435,8 +435,8 @@ async function onTabCreated(nativeTab: NativeTab, attached?: boolean) {
       checkIfSessionIsRestoring(tab)
       if (maybeRestoredTabsDataQuerying && tab.checkingSessionRestore) {
         const sessionRestoreIsDetected = await tab.checkingSessionRestore
-        delete tab.checkingSessionRestore
-        delete tab.resolveSessionRestoreDetection
+        tab.checkingSessionRestore = undefined
+        tab.resolveSessionRestoreDetection = undefined
         if (sessionRestoreIsDetected) return
       }
     }

@@ -415,7 +415,7 @@ async function moveTabsToWin(tabIds: ID[], dst: T.DstPlaceInfo): Promise<void> {
 
   let moved
   if (sidebarIsOpen) {
-    delete dst.windowChooseConf
+    dst.windowChooseConf = undefined
     moved = await IPC.sidebar(dst.windowId, 'moveTabsToThisWin', tabs, dst).catch(() => false)
   }
 

@@ -145,7 +145,7 @@ async function onContainerRemoved(ctr: Container): Promise<void> {
           moveRulesRecalcNeeded = true
           if (!rule.url) return false
           else {
-            delete rule.containerId
+            rule.containerId = undefined
             rule.active = false
           }
         }

@@ -228,7 +228,7 @@ async function updDstInfoForPopup(dstInfo: DstPlaceInfo) {
   if (targetWinId === undefined) return
 
   dstInfo.windowId = targetWinId
-  delete dstInfo.panelId
+  dstInfo.panelId = undefined
 }
 
 function onTabDragStart(e: DragEvent, tab: Sync.EntryTab, entry: Sync.SyncedEntry) {

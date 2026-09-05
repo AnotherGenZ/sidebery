@@ -82,8 +82,8 @@ export async function load(): Promise<void> {
         'minUrlAge:5000; urgent; pinned'
       )
     }
-    delete state.tabsUpdateMark
-    delete state.tabsUpdateMarkFirst
+    state.tabsUpdateMark = undefined
+    state.tabsUpdateMarkFirst = undefined
     initSaveNeeded = true
   }
 

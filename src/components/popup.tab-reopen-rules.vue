@@ -272,7 +272,7 @@ function onSave() {
     const isIncludeRule = newRuleType.value === 'include'
     ruleConfig.type = isIncludeRule ? E.TabReopenRuleType.Include : E.TabReopenRuleType.Exclude
     if (name) ruleConfig.name = name
-    else delete ruleConfig.name
+    else ruleConfig.name = undefined
     Containers.saveContainer(container, 1000)
   }
 

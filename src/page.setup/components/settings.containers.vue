@@ -93,7 +93,7 @@ async function removeContainer(container: Container): Promise<void> {
         panelConf.moveRules = panelConf.moveRules.filter(rule => {
           if (rule.containerId && rule.containerId === container.id) {
             navSaveNeeded = true
-            delete rule.containerId
+            rule.containerId = undefined
             if (!rule.url) return false
           }
           return true

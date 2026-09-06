@@ -1852,7 +1852,6 @@ export function addPanel<T extends T.Panel>(index: number, panel: T, replace?: b
     const replaceableId = reactive.nav[index]
     if (replaceableId !== undefined) {
       if (activePanelId === replaceableId) {
-        setActivePanelId(panel.id)
         prevActivePanelId = panel.id
 
         if (Settings.updateWinPrefaceOnPanelSwitch) Windows.updWindowPreface()
@@ -2448,13 +2447,15 @@ export async function convertToBookmarksPanel(
   recalcBookmarksPanels()
   saveSidebar(500)
 
-  setTimeout(() => {
+  if (isActive) activatePanel(bookmarksPanel.id, false)
+
+  requestAnimationFrame(() => {
     // Unlock switching panels
     switchingLock = false
 
     // Mark bookmarks panel as ready
     if (Bookmarks.tree.length) bookmarksPanel.reactive.ready = bookmarksPanel.ready = true
-  }, 200)
+  })
 
   Notifications.finishProgress(notif, 2000)
   notif.title = translate('notif.panel_conv')
@@ -2470,6 +2471,7 @@ export async function convertToTabsPanel(
   if (convertingPanelLock) return D.NOID
   convertingPanelLock = true
 
+  const isActive = activePanelId === bookmarksPanel.id
   const index = reactive.nav.indexOf(bookmarksPanel.id)
   if (index === -1) {
     convertingPanelLock = false
@@ -2526,8 +2528,8 @@ export async function convertToTabsPanel(
   tabsPanel = addPanel(index, tabsPanel, true)
   recalcPanels()
   recalcTabsPanels()
-  activatePanel(tabsPanel.id, false)
 
+  if (isActive) activatePanel(tabsPanel.id, false)
   if (isFirstTabsPanel) await Tabs.load()
 
   // Open tabs
